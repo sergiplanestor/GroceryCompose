@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,14 +20,21 @@ fun AuthContainerComponent(
     header: @Composable ColumnScope.() -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color { primaryContainer })
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color { primary })
     ) {
         Column(
-            modifier = Modifier.padding(
-                horizontal = viewport { mediumSmall },
-                vertical = viewport { medium }),
+            modifier = Modifier
+                .padding(
+                    horizontal = viewport { mediumSmall },
+                    vertical = viewport { medium }
+                )
+                .background(color { primary })
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             header()

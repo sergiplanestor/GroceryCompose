@@ -8,14 +8,8 @@ import javax.inject.Inject
 
 class FetchUserUseCase @Inject constructor(
     private val repository: UserRepository
-) : UseCase<FetchUserUseCase.Params, User> {
+) : UseCase<Unit, User> {
 
-    override suspend fun execute(id: String, params: Params): User =
-        repository.fetchLocalUser() ?: throw UserError.NotRegistered
-
-    object Params
-
-    companion object {
-        const val ID = "UseCase.FetchUser"
-    }
+    override suspend fun execute(id: String, params: Unit): User =
+        repository.fetchLocalUser() ?: throw UserError.NotSignUp
 }

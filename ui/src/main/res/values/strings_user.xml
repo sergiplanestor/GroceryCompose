@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="searching_user">Checking your user profile… that won\'t take much</string>
-    <string name="username_placeholder">User1</string>
-    <string name="email_placeholder">example@xyz.com</string>
 </resources>

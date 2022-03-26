@@ -3,4 +3,7 @@
     <string name="loading">Loading…</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
+    <string name="sign_up">Sign me up</string>
+    <string name="field_error_mandatory">This field is required</string>
+    <string name="field_error_invalid_email">Invalid email format, please check it</string>
 </resources>

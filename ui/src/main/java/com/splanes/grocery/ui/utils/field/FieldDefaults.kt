@@ -1,6 +1,7 @@
 package com.splanes.grocery.ui.utils.field
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
+import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.body
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.shape
@@ -46,6 +48,10 @@ object FieldDefaults {
     @Composable
     fun colorsOutlined(
         textColor: Color = color { onSurface },
+        unfocusedBorderColor: Color = color { onSurface },
+        focusedBorderColor: Color = color { primary },
+        disabledBorderColor: Color = unfocusedBorderColor.alpha(ContentAlpha.disabled),
+        errorBorderColor: Color = color { error },
         disabledTextColor: Color = color { onSurface }.alpha(ContentAlpha.disabled),
         cursorColor: Color = color { primary }.alpha(.8),
         errorCursorColor: Color = color { error.composite(surface, .7) },
@@ -71,15 +77,15 @@ object FieldDefaults {
         errorLabelColor: Color = MaterialTheme.colors.error,
         placeholderColor: Color = textColor.alpha(ContentAlpha.medium),
         disabledPlaceholderColor: Color = textColor.alpha(ContentAlpha.disabled)
-    ): TextFieldColors = TextFieldDefaults.textFieldColors(
+    ): TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         textColor = textColor,
         disabledTextColor = disabledTextColor,
         cursorColor = cursorColor,
         errorCursorColor = errorCursorColor,
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        errorIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
+        focusedBorderColor = focusedBorderColor,
+        unfocusedBorderColor = unfocusedBorderColor,
+        errorBorderColor = errorBorderColor,
+        disabledBorderColor = disabledBorderColor,
         leadingIconColor = leadingIconColor,
         disabledLeadingIconColor = disabledLeadingIconColor,
         errorLeadingIconColor = errorLeadingIconColor,
@@ -96,48 +102,100 @@ object FieldDefaults {
     )
 
     @Composable
+    fun colorsOutlined(
+        textColor: Color,
+        errorColor: Color,
+        borderFocusedColor: Color = textColor,
+        borderUnfocusedColor: Color = borderFocusedColor.alpha { low },
+        cursorColor: Color = textColor,
+        trailingIconColor: Color = borderFocusedColor.alpha { medium },
+        trailingIconErrorColor: Color = errorColor.alpha { medium },
+        leadingIconColor: Color = borderFocusedColor.alpha { medium },
+        leadingIconErrorColor: Color = errorColor.alpha { medium },
+    ): TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+        textColor = textColor,
+        disabledTextColor = textColor.alpha { disabled },
+        focusedBorderColor = borderFocusedColor,
+        unfocusedBorderColor = borderUnfocusedColor,
+        disabledBorderColor = borderUnfocusedColor.alpha { disabled },
+        errorBorderColor = errorColor,
+        cursorColor = cursorColor,
+        errorCursorColor = errorColor,
+        backgroundColor = Color.Transparent,
+        leadingIconColor = leadingIconColor,
+        disabledLeadingIconColor = leadingIconColor.alpha { disabled },
+        errorLeadingIconColor = leadingIconErrorColor,
+        trailingIconColor = trailingIconColor,
+        disabledTrailingIconColor = trailingIconColor.alpha { disabled },
+        errorTrailingIconColor = trailingIconErrorColor,
+        focusedLabelColor = borderFocusedColor,
+        unfocusedLabelColor = borderFocusedColor.alpha { medium },
+        disabledLabelColor = borderUnfocusedColor.alpha { disabled },
+        errorLabelColor = errorColor,
+        placeholderColor = textColor,
+        disabledPlaceholderColor = textColor.alpha { disabled },
+    )
+
+    @Composable
     fun Label(
         text: String,
-        modifier: Modifier = Modifier
+        colors: TextFieldColors,
+        error: Boolean,
+        focused: Boolean,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true
     ) {
-        with(body { medium }) {
-            Text(
-                modifier = modifier,
-                text = text,
-                fontSize = fontSize,
-                fontFamily = fontFamily,
-                fontWeight = fontWeight
-            )
-        }
+        Text(
+            modifier = modifier,
+            text = text,
+            style = body { medium },
+            color = colors.labelColor(
+                enabled = enabled,
+                error = error,
+                interactionSource = MutableInteractionSource()
+            ).value.alpha { if (focused) high else medium }
+        )
     }
 
     @Composable
     fun Placeholder(
         text: String,
-        modifier: Modifier = Modifier
+        colors: TextFieldColors,
+        modifier: Modifier = Modifier,
+        enabled: Boolean = true
     ) {
-        with(title { medium }) {
-            Text(
-                modifier = modifier,
-                text = text,
-                fontSize = fontSize,
-                fontFamily = fontFamily,
-                fontWeight = fontWeight
-            )
-        }
+        Text(
+            modifier = modifier,
+            text = text,
+            style = title { medium },
+            color = colors.placeholderColor(enabled = enabled).value
+        )
     }
 
     @Composable
     fun Icon(
+        iconType: FieldIcon,
         imageVector: ImageVector,
+        focused: Boolean,
+        colors: TextFieldColors,
         modifier: Modifier = Modifier,
         contentDescription: String? = null,
-        size: Int = 24
+        size: Int = 20,
     ) {
         androidx.compose.material3.Icon(
             modifier = modifier.size(size = size.dp),
             imageVector = imageVector,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            tint = when (iconType) {
+                FieldIcon.Leading -> colors.leadingIconColor(
+                    enabled = true,
+                    isError = false
+                ).value.alpha(if (focused) .7 else .45)
+                FieldIcon.Trailing -> colors.trailingIconColor(
+                    enabled = true,
+                    isError = false
+                ).value.alpha(if (focused) .7 else .45)
+            }
         )
     }
 
@@ -145,9 +203,10 @@ object FieldDefaults {
     fun IconClear(
         visible: Boolean,
         onClick: () -> Unit,
+        colors: TextFieldColors,
         modifier: Modifier = Modifier,
         imageVector: ImageVector = Icons.Rounded.Backspace,
-        size: Int = 24
+        size: Int = 20
     ) {
         AnimatedVisibility(
             visible = visible,
@@ -156,12 +215,19 @@ object FieldDefaults {
         ) {
             IconButton(modifier = modifier, onClick = onClick) {
                 Icon(
+                    iconType = FieldIcon.Trailing,
+                    focused = true,
+                    colors = colors,
                     size = size,
                     imageVector = imageVector,
                     contentDescription = "Clear field"
                 )
             }
         }
+    }
+
+    enum class FieldIcon {
+        Leading, Trailing,
     }
 }
 
