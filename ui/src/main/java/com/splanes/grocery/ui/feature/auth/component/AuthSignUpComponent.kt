@@ -12,8 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AlternateEmail
 import androidx.compose.material.icons.rounded.Badge
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +20,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import com.splanes.grocery.ui.component.button.Buttons
 import com.splanes.grocery.ui.component.form.model.Forms
 import com.splanes.grocery.ui.component.form.model.Forms.isDefault
 import com.splanes.grocery.ui.component.form.model.Forms.isError
 import com.splanes.grocery.ui.component.form.model.Forms.satisfies
+import com.splanes.grocery.ui.component.spacer.VerticalSpace
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
 import com.splanes.grocery.ui.utils.anim.tween
@@ -40,8 +39,8 @@ import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.body
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
+import com.splanes.grocery.ui.utils.resources.headline
 import com.splanes.grocery.ui.utils.resources.label
-import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.grocery.ui.utils.resources.title
 import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
@@ -63,7 +62,9 @@ fun AuthSignUpComponent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         WelcomeText()
-        Space { mediumLarge }
+        Space { large }
+        SignUpFormText()
+        Space { huge }
         UsernameTextField(
             state = usernameState,
             onChange = { usernameState = updateFieldState(usernameState, it, usernameValidators) }
@@ -84,12 +85,28 @@ fun AuthSignUpComponent(
 }
 
 @Composable
-fun WelcomeText(
-
-) {
+fun WelcomeText() {
     Text(
-        text = "Welcome! Seems that this is your first time here.\nIn order to set up all the config, please fill the next fields :)  ",
+        text = string { Strings.user_welcome_to_app },
+        style = headline { medium },
+        color = color { onPrimary },
+        textAlign = TextAlign.Center
+    )
+    VerticalSpace { mediumSmall }
+    Text(
+        text = string { Strings.user_nice_to_meet_you },
+        style = headline { small },
+        color = color { onPrimary },
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun SignUpFormText() {
+    Text(
+        text = string { Strings.user_sign_up_form },
         style = title { medium },
+        color = color { onPrimary },
         textAlign = TextAlign.Center
     )
 }
@@ -132,25 +149,14 @@ fun SubmitButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TextButton(
+    Buttons.Fill(
         modifier = modifier,
+        text = string { Strings.lets_go },
         enabled = enabled,
-        onClick = onClick,
-        shape = shape(size = 8),
-        colors = ButtonDefaults.textButtonColors(
-            contentColor = color { onPrimary },
-            containerColor = color { primary },
-            disabledContentColor = color { primary }.alpha { disabled },
-            disabledContainerColor = color { primary }.alpha { disabled }
-        )
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = dp { small }),
-            text = string { Strings.sign_up },
-            style = body { medium },
-            color = Color.Unspecified
-        )
-    }
+        textColor = color { primary },
+        backgroundColor = color { onPrimary.composite(primary, .7) },
+        onClick = onClick
+    )
 }
 
 @Composable

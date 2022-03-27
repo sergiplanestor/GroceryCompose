@@ -25,7 +25,7 @@ fun AuthActivityComponent() {
     )
 
     AuthContainerComponent(
-        header = { AuthHeaderComponent() },
+        header = { AuthHeaderComponent(onAnimFinish = { viewModel.findUser() }) },
         content = {
             when (val uiState = viewModel.uiState.value) {
                 is UiState.Uninitialized -> { /* Nothing to do here */ }

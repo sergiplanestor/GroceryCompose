@@ -23,10 +23,6 @@ class AuthComponentViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
 ) : ComponentViewModel<AuthUiModel, AuthEvent, AuthRedirections>() {
 
-    init {
-        findUser()
-    }
-
     override fun onUiEventHandled(uiEvent: AuthEvent) {
         when (uiEvent) {
             is AuthEvent.SignUp -> doSignUp(uiEvent.email, uiEvent.username)
@@ -34,7 +30,7 @@ class AuthComponentViewModel @Inject constructor(
         }
     }
 
-    private fun findUser() {
+    fun findUser() {
         isUserSignUpUseCase.launch(
             req = isUserSignUpUseCase.request(),
             mapper = {

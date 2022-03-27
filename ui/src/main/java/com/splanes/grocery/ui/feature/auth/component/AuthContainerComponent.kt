@@ -29,6 +29,7 @@ fun AuthContainerComponent(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(
                     horizontal = viewport { mediumSmall },
                     vertical = viewport { medium }

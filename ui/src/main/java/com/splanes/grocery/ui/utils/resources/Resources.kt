@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -13,8 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
-import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
+import com.splanes.grocery.utils.logger.utils.throwMessage
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Body
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Colors
@@ -60,6 +58,21 @@ fun shape(block: UiSize<RoundedCornerShape>.() -> Shape): Shape = Shapes.block()
 @Composable
 fun dp(isComponent: Boolean = true, block: UiSize.Extended<Dp>.() -> Dp): Dp =
     (if (isComponent) ComponentPaddings else ViewportPaddings).block()
+
+@Composable
+inline fun <reified T> dpValue(
+    isComponent: Boolean = true,
+    noinline block: UiSize.Extended<Dp>.() -> Dp
+): T =
+    with(dp(isComponent, block).value) {
+        when (T::class) {
+            Float::class -> this
+            Int::class -> toInt()
+            Long::class -> toLong()
+            Double::class -> toDouble()
+            else -> throwMessage { "Unsupported type ${T::class.simpleName}" }
+        } as T
+    }
 
 @Composable
 fun padding(block: UiSize.Extended<Dp>.() -> Dp): Dp =

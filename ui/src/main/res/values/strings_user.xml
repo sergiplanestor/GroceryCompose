@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="user_welcome_to_app">Welcome to Grocery</string>
+    <string name="user_nice_to_meet_you">Nice to meet you!</string>
+    <string name="user_sign_up_form">Let\'s configure your user. It will be fast!</string>
     <string name="searching_user">Checking your user profile… that won\'t take much</string>
 </resources>
