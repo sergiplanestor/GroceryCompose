@@ -7,10 +7,12 @@ object Forms {
 
     sealed class State<out T>(open val value: T?)
     data class Error<out T>(override val value: T, @StringRes val message: Int?) : State<T>(value)
-    data class Default<out T>(override val value: T?) : State<T>(value)
+    data class Idle<out T>(override val value: T?) : State<T>(value)
 
-    fun <T> State<T>.isDefault(): Boolean = this is Default
+    fun <T> State<T>.isIdle(): Boolean = this is Idle
     fun <T> State<T>.isError(): Boolean = this is Error
+    fun <T> State<T>.isValid(check: State<T>.() -> Boolean = { !isError() }): Boolean = check()
+    fun isValid(vararg fields: State<*>): Boolean = fields.all { it.isValid() }
 
     sealed class Validator<T>(@StringRes open val error: Int) {
 
@@ -43,4 +45,6 @@ object Forms {
             .firstOrNull { result -> result is Validator.Error }
             ?: Validator.Valid
     }
+
+
 }

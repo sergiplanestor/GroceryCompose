@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -23,15 +24,18 @@ import com.splanes.grocery.ui.utils.resources.body
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.shape
+import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.theme.UiTheme
 
 @Composable
-fun AuthLoaderComponent(message: String) {
-
+fun AuthLoaderComponent(
+    message: String,
+    background: Color = color { tertiaryContainer }
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.anim_grocery_cart))
     Surface(
         shape = shape(size = 12),
-        color = color { tertiaryContainer }
+        color = background.alpha(.35)
     ) {
         Column(
             modifier = Modifier
@@ -56,8 +60,16 @@ fun AuthLoaderComponent(message: String) {
     }
 }
 
+
+
 @Composable
-@Preview(name = "p1", widthDp = 300, heightDp = 500)
+@Preview(
+    name = "AuthLoaderComponent",
+    widthDp = 300,
+    heightDp = 500,
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF
+)
 fun PreviewAuthLoaderComponent() {
     UiTheme.AppTheme {
         AuthLoaderComponent("Loading...")

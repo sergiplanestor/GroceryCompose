@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".feature.auth.activity.AuthActivity"
+            android:name="com.splanes.grocery.ui.infra.activity.GroceryActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
@@ -11,6 +11,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 

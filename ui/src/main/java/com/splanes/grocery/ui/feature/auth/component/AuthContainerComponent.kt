@@ -1,5 +1,6 @@
 package com.splanes.grocery.ui.feature.auth.component
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,7 @@ import com.splanes.grocery.ui.utils.resources.viewport
 @Composable
 fun AuthContainerComponent(
     header: @Composable ColumnScope.() -> Unit,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.(ScrollState) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -31,8 +32,9 @@ fun AuthContainerComponent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = viewport { mediumSmall },
-                    vertical = viewport { medium }
+                    start = viewport { mediumSmall },
+                    end = viewport { mediumSmall },
+                    top = viewport { medium }
                 )
                 .background(color { primary })
                 .verticalScroll(scrollState),
@@ -40,7 +42,7 @@ fun AuthContainerComponent(
         ) {
             header()
             Space { medium }
-            content()
+            content(scrollState)
         }
     }
 }

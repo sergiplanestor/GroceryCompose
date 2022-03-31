@@ -11,7 +11,7 @@ fun <T> throwError(
     val t = throwable()
     val err = when {
         message != null -> RuntimeException(message.invoke())
-        t != null -> t.takeUnless { it.message.isNullOrBlank() }
+        t != null -> t
         else -> null
     } ?: EmptyError
 
@@ -21,3 +21,8 @@ fun <T> throwError(
 
 fun <T> throwMessage(message: () -> String? = { EmptyError.message }): T =
     throwError(message = { (message() ?: EmptyError.message).orEmpty() }, throwable = { null })
+
+fun <T> T?.orError(
+    message: (() -> String)? = null,
+    throwable: () -> Throwable? = { EmptyError }
+): T = this ?: throwError(message, throwable)

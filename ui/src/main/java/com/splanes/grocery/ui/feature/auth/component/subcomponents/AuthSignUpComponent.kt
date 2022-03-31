@@ -1,13 +1,17 @@
 package com.splanes.grocery.ui.feature.auth.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AlternateEmail
@@ -16,21 +20,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.splanes.grocery.ui.component.anim.AnimationSideEffect
 import com.splanes.grocery.ui.component.button.Buttons
 import com.splanes.grocery.ui.component.form.model.Forms
-import com.splanes.grocery.ui.component.form.model.Forms.isDefault
 import com.splanes.grocery.ui.component.form.model.Forms.isError
 import com.splanes.grocery.ui.component.form.model.Forms.satisfies
 import com.splanes.grocery.ui.component.spacer.VerticalSpace
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
+import com.splanes.grocery.ui.utils.anim.scrollTo
 import com.splanes.grocery.ui.utils.anim.tween
 import com.splanes.grocery.ui.utils.field.FieldDefaults
 import com.splanes.grocery.ui.utils.field.FieldType
@@ -39,48 +48,64 @@ import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.body
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
+import com.splanes.grocery.ui.utils.resources.dpValue
 import com.splanes.grocery.ui.utils.resources.headline
 import com.splanes.grocery.ui.utils.resources.label
+import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.grocery.ui.utils.resources.title
 import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
 import com.splanes.toolkit.compose.ui.components.feature.navhost.graph.transition.fadeIn
 import com.splanes.toolkit.compose.ui.components.feature.navhost.graph.transition.fadeOut
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun AuthSignUpComponent(
     username: Forms.State<String>,
     email: Forms.State<String>,
+    scrollState: ScrollState,
     onSignUp: (String, String) -> Unit
 ) {
+    var alpha by remember { mutableStateOf(0f) }
     var usernameState by remember { mutableStateOf(username) }
     var emailState by remember { mutableStateOf(email) }
+    val coroutineScope = rememberCoroutineScope()
+    val initFormCardOffset = (LocalConfiguration.current.screenHeightDp / 2).toFloat()
+    val formCardOffset = remember { Animatable(initialValue = initFormCardOffset) }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         WelcomeText()
-        Space { large }
-        SignUpFormText()
-        Space { huge }
-        UsernameTextField(
-            state = usernameState,
-            onChange = { usernameState = updateFieldState(usernameState, it, usernameValidators) }
-        )
-        Space { mediumSmall }
-        EmailTextField(
-            state = emailState,
-            onChange = { emailState = updateFieldState(emailState, it, emailValidators) }
-        )
-        Space { medium }
-        SubmitButton(
-            enabled = usernameState.isDefault() && emailState.isDefault(),
-            onClick = {
-                onSignUp(usernameState.value.orEmpty(), emailState.value.orEmpty())
-            }
-        )
+        Space { mediumLarge }
+        Space(formCardOffset.value.dp)
+        SignUpFormCard(alpha) {
+            UsernameTextField(
+                state = usernameState,
+                onFocused = { scrollTo(coroutineScope, scrollState, false) },
+                onChange = {
+                    usernameState = updateFieldState(usernameState, it, usernameValidators)
+                }
+            )
+            Space { mediumSmall }
+            EmailTextField(
+                state = emailState,
+                onFocused = { scrollTo(coroutineScope, scrollState, true) },
+                onChange = { emailState = updateFieldState(emailState, it, emailValidators) }
+            )
+            Space { medium }
+            SubmitButton(
+                enabled = Forms.isValid(usernameState, emailState),
+                onClick = {
+                    onSignUp(usernameState.value.orEmpty(), emailState.value.orEmpty())
+                }
+            )
+        }
+
+        Animations(offset = formCardOffset) { alpha = it }
     }
 }
 
@@ -102,23 +127,57 @@ fun WelcomeText() {
 }
 
 @Composable
-fun SignUpFormText() {
-    Text(
-        text = string { Strings.user_sign_up_form },
-        style = title { medium },
-        color = color { onPrimary },
-        textAlign = TextAlign.Center
+fun SignUpFormCard(
+    alpha: Float,
+    form: @Composable ColumnScope.() -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .padding(start = dp { small }, end = dp { small })
+            .alpha(alpha),
+        color = color { surface },
+        shape = shape(12),
+        elevation = 8.dp,
+        content = {
+            Column(
+                modifier = Modifier.padding(
+                    start = dp { medium },
+                    end = dp { medium },
+                    bottom = dp { medium },
+                    top = dp { large }
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = dp { mediumSmall }),
+                    text = string { Strings.user_sign_up },
+                    style = headline { medium },
+                    color = color { onSurface },
+                )
+                Space { small }
+                Text(
+                    modifier = Modifier.padding(horizontal = dp { mediumSmall }),
+                    text = string { Strings.user_sign_up_form },
+                    style = title { medium },
+                    color = color { onSurface }
+                )
+                Space { mediumLarge }
+                form()
+            }
+        }
     )
 }
 
 @Composable
 fun UsernameTextField(
     state: Forms.State<String>,
+    onFocused: () -> Unit,
     onChange: (String) -> Unit
 ) {
     Field(
         value = state.value.orEmpty(),
         onChange = onChange,
+        onFocused = onFocused,
         label = string { Strings.username },
         icon = Icons.Rounded.Badge,
         isError = state.isError(),
@@ -130,16 +189,18 @@ fun UsernameTextField(
 @Composable
 fun EmailTextField(
     state: Forms.State<String>,
+    onFocused: () -> Unit,
     onChange: (String) -> Unit
 ) {
     Field(
         value = state.value.orEmpty(),
         onChange = onChange,
+        onFocused = onFocused,
         label = string { Strings.email },
         icon = Icons.Rounded.AlternateEmail,
         isError = state.isError(),
         errorMessage = (state as? Forms.Error<String>)?.message,
-        keyboardOptions = FieldDefaults.keyboardOption(FieldType.Text(), ImeAction.Next)
+        keyboardOptions = FieldDefaults.keyboardOption(FieldType.Email, ImeAction.Done)
     )
 }
 
@@ -153,8 +214,8 @@ fun SubmitButton(
         modifier = modifier,
         text = string { Strings.lets_go },
         enabled = enabled,
-        textColor = color { primary },
-        backgroundColor = color { onPrimary.composite(primary, .7) },
+        textColor = color { onPrimary },
+        backgroundColor = color { primary.composite(surface, .8) },
         onClick = onClick
     )
 }
@@ -168,14 +229,15 @@ fun Field(
     isError: Boolean,
     errorMessage: Int?,
     keyboardOptions: KeyboardOptions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFocused: () -> Unit = {}
 ) {
     var hasFocus by remember { mutableStateOf(false) }
     var isClearIconVisible by remember { mutableStateOf(false) }
     var isErrorMessageVisible by remember { mutableStateOf(isError && errorMessage != null) }
     val colors = FieldDefaults.colorsOutlined(
-        textColor = color { onPrimary },
-        errorColor = color { onPrimary.composite(error, .5) },
+        textColor = color { onSurface },
+        errorColor = color { error.composite(onSurface, .75) },
     )
 
     Column(modifier = modifier) {
@@ -185,6 +247,7 @@ fun Field(
                 .onFocusEvent { focusState ->
                     hasFocus = focusState.hasFocus
                     isClearIconVisible = hasFocus && value.isNotBlank()
+                    if (hasFocus) onFocused()
                 },
             value = value,
             onValueChange = { input ->
@@ -227,11 +290,44 @@ fun Field(
                     modifier = Modifier.padding(vertical = dp { small }),
                     text = string { text },
                     style = label { medium },
-                    color = color { error }.alpha { if (hasFocus) high else medium }
+                    color = color {
+                        error.composite(
+                            onSurface,
+                            .75
+                        )
+                    }.alpha { if (hasFocus) high else medium }
                 )
             }
         }
     }
+}
+
+@Composable
+private fun Animations(
+    offset: Animatable<Float, *>,
+    update: (Float) -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val max =
+        (LocalConfiguration.current.screenHeightDp / 2).toFloat() - dpValue<Float> { medium }
+    AnimationSideEffect(
+        AnimDefaults.SideEffectUi(
+            anim = offset,
+            target = dpValue { medium },
+            duration = 1500,
+            onUpdate = { value ->
+                coroutineScope.launch { update(((max - value) / max)) }
+            }
+        )
+    )
+}
+
+private fun scrollTo(scope: CoroutineScope, state: ScrollState, isTargetMax: Boolean) {
+    scope.scrollTo(
+        state,
+        if (isTargetMax) state.maxValue else state.maxValue - 1,
+        tween(delay = 150, duration = 500)
+    )
 }
 
 private fun updateFieldState(
@@ -241,7 +337,7 @@ private fun updateFieldState(
 ): Forms.State<String> {
     val validatorResult = value.satisfies(validators)
     return when (currentState) {
-        is Forms.Default -> {
+        is Forms.Idle -> {
             when (validatorResult) {
                 is Forms.Validator.Error ->
                     Forms.Error(value, validatorResult.error)
@@ -254,7 +350,7 @@ private fun updateFieldState(
                 is Forms.Validator.Error ->
                     currentState.copy(value = value, message = validatorResult.error)
                 Forms.Validator.Valid ->
-                    Forms.Default(value)
+                    Forms.Idle(value)
             }
         }
     }

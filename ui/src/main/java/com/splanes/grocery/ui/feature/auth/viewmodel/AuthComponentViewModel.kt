@@ -1,17 +1,20 @@
-package com.splanes.grocery.ui.feature.auth.component
+package com.splanes.grocery.ui.feature.auth.viewmodel
 
 import com.splanes.grocery.domain.feature.user.model.User
 import com.splanes.grocery.domain.feature.user.usecase.FetchUserUseCase
 import com.splanes.grocery.domain.feature.user.usecase.IsUserSignUpUseCase
 import com.splanes.grocery.domain.feature.user.usecase.SignInUseCase
 import com.splanes.grocery.domain.feature.user.usecase.SignUpUseCase
+import com.splanes.grocery.domain.utils.usecase.async
 import com.splanes.grocery.domain.utils.usecase.request
 import com.splanes.grocery.ui.feature.auth.contract.AuthEvent
 import com.splanes.grocery.ui.feature.auth.contract.AuthRedirections
 import com.splanes.grocery.ui.feature.auth.contract.AuthUiModel
+import com.splanes.grocery.utils.scope.withResult
 import com.splanes.toolkit.compose.base_arch.feature.domain.usecase.UseCase
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiState
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.viewmodel.ComponentViewModel
+import com.splanes.toolkit.compose.base_arch.feature.presentation.component.viewmodel.utils.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -30,20 +33,24 @@ class AuthComponentViewModel @Inject constructor(
         }
     }
 
-    fun findUser() {
-        isUserSignUpUseCase.launch(
-            req = isUserSignUpUseCase.request(),
-            mapper = {
-                handle { isSignedUp ->
-                    if (!isSignedUp) updateUiState {
-                        UiState.Ready(
-                            AuthUiModel.SignUp()
-                        )
-                    }
-                }
+    fun checkUserAccountStatus() {
+        launch {
+            val isSignedUp = isUserSignedUpAsync()
+            val uiModel = if (isSignedUp) {
+                AuthUiModel.AutoSignIn
+            } else {
+                AuthUiModel.SignUp()
             }
-        )
+            updateUiState { UiState.Ready(uiModel) }
+        }
     }
+
+    private suspend fun isUserSignedUpAsync(): Boolean =
+        isUserSignUpUseCase.async(
+            req = isUserSignUpUseCase.request(),
+            onError = { err -> withResult(result = null) { errorUiState(err.cause) } }
+        ) ?: false
+
 
     private fun fetchUserAndSignIn() {
         fetchUser.launch(
@@ -57,12 +64,13 @@ class AuthComponentViewModel @Inject constructor(
         mapper = { handle { onUiSideEffect { AuthRedirections.Dashboard } } }
     )
 
-    private fun doSignUp(email: String, username: String) {
-
-    }
+    private fun doSignUp(email: String, username: String) = signUpUseCase.launch(
+        req = signUpUseCase.request(SignUpUseCase.Params(email, username)),
+        mapper = { handle { onUiSideEffect { AuthRedirections.Dashboard } } }
+    )
 
     private fun <Data> UseCase.Result<Data>.handle(
-        onError: (UseCase.Error<Data>) -> Unit = { err -> updateUiState { UiState.Error(err.cause) } },
+        onError: (UseCase.Error<Data>) -> Unit = { err -> errorUiState(err.cause) },
         onSuccess: (Data) -> Unit,
     ) {
         when (this) {
@@ -70,4 +78,7 @@ class AuthComponentViewModel @Inject constructor(
             is UseCase.Error -> onError(this)
         }
     }
+
+    private fun errorUiState(cause: Throwable?) =
+        updateUiState { UiState.Error(cause) }
 }

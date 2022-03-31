@@ -5,12 +5,10 @@ import com.splanes.grocery.domain.feature.user.model.UserSearch
 
 interface UserLocalDataSource {
 
-    suspend fun fetchCurrent(): UserDto?
-
-    suspend fun insertOrUpdateCurrent(data: UserDto)
+    suspend fun fetch(): UserDto?
 
     suspend fun search(search: UserSearch): UserDto?
 
-    suspend fun insertOrUpdate(data: UserDto)
+    suspend fun insertOrUpdate(data: UserDto): Boolean
 
 }

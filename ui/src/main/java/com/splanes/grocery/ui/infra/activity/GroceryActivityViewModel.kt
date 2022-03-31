@@ -1,4 +1,4 @@
-package com.splanes.grocery.ui.feature.auth.activity
+package com.splanes.grocery.ui.infra.activity
 
 import com.splanes.toolkit.compose.base_arch.feature.presentation.activity.contract.ActivityUiModel
 import com.splanes.toolkit.compose.base_arch.feature.presentation.activity.viewmodel.BaseComponentActivityViewModel
@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthActivityViewModel @Inject constructor() : BaseComponentActivityViewModel() {
+class GroceryActivityViewModel @Inject constructor() : BaseComponentActivityViewModel() {
 
     fun ready(statusBarColors: StatusBarColors, scaffoldColors: ScaffoldColors) {
         updateUiState { UiState.Ready(ActivityUiModel(statusBarColors, scaffoldColors)) }
