@@ -1,4 +1,4 @@
-package com.splanes.grocery.ui.feature.auth.component
+package com.splanes.grocery.ui.feature.auth.component.subcomponents
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Box
@@ -43,7 +43,7 @@ fun ColumnScope.AuthHeaderComponent(onAnimFinish: () -> Unit) {
         Box(modifier = Modifier.padding(all = dp { huge }), contentAlignment = Alignment.Center) {
             Icon(
                 modifier = Modifier.size(65.dp),
-                painter = painter { Drawables.ic_app_logo },
+                painter = painter { Drawables.ic_grocery_bag },
                 tint = color { primary },
                 contentDescription = null
             )

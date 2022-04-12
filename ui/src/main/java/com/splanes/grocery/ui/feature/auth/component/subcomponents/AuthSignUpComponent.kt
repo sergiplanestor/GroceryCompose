@@ -45,15 +45,15 @@ import com.splanes.grocery.ui.utils.field.FieldDefaults
 import com.splanes.grocery.ui.utils.field.FieldType
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
-import com.splanes.grocery.ui.utils.resources.body
+import com.splanes.grocery.ui.utils.resources.bodyStyle
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.dpValue
-import com.splanes.grocery.ui.utils.resources.headline
-import com.splanes.grocery.ui.utils.resources.label
+import com.splanes.grocery.ui.utils.resources.headlineStyle
+import com.splanes.grocery.ui.utils.resources.labelStyle
 import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.string
-import com.splanes.grocery.ui.utils.resources.title
+import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
 import com.splanes.toolkit.compose.ui.components.feature.navhost.graph.transition.fadeIn
 import com.splanes.toolkit.compose.ui.components.feature.navhost.graph.transition.fadeOut
@@ -113,14 +113,14 @@ fun AuthSignUpComponent(
 fun WelcomeText() {
     Text(
         text = string { Strings.user_welcome_to_app },
-        style = headline { medium },
+        style = headlineStyle { medium },
         color = color { onPrimary },
         textAlign = TextAlign.Center
     )
     VerticalSpace { mediumSmall }
     Text(
         text = string { Strings.user_nice_to_meet_you },
-        style = headline { small },
+        style = headlineStyle { small },
         color = color { onPrimary },
         textAlign = TextAlign.Center
     )
@@ -151,14 +151,14 @@ fun SignUpFormCard(
                 Text(
                     modifier = Modifier.padding(horizontal = dp { mediumSmall }),
                     text = string { Strings.user_sign_up },
-                    style = headline { medium },
+                    style = headlineStyle { medium },
                     color = color { onSurface },
                 )
                 Space { small }
                 Text(
                     modifier = Modifier.padding(horizontal = dp { mediumSmall }),
                     text = string { Strings.user_sign_up_form },
-                    style = title { medium },
+                    style = titleStyle { medium },
                     color = color { onSurface }
                 )
                 Space { mediumLarge }
@@ -255,7 +255,7 @@ fun Field(
                 onChange(input)
             },
             colors = colors,
-            textStyle = body { medium },
+            textStyle = bodyStyle { medium },
             shape = FieldDefaults.shapeOutlined(),
             label = { FieldDefaults.Label(label, colors, error = isError, focused = hasFocus) },
             singleLine = true,
@@ -289,7 +289,7 @@ fun Field(
                 Text(
                     modifier = Modifier.padding(vertical = dp { small }),
                     text = string { text },
-                    style = label { medium },
+                    style = labelStyle { medium },
                     color = color {
                         error.composite(
                             onSurface,

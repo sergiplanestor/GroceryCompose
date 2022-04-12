@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.utils.logger.utils.throwMessage
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
+import com.splanes.toolkit.compose.ui.theme.feature.typographies.ThemeTypographies
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Body
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Colors
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.ComponentPaddings
@@ -83,21 +84,31 @@ fun viewport(block: UiSize.Extended<Dp>.() -> Dp): Dp =
     dp(isComponent = false, block)
 
 @Composable
-fun display(block: UiSize<TextStyle>.() -> TextStyle): TextStyle =
+fun textStyle(block: @Composable ThemeTypographies.() -> TextStyle): TextStyle =
+    Typographies.block()
+
+@Composable
+fun displayStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Display }): TextStyle =
     Typographies.Display.block()
 
 @Composable
-fun headline(block: UiSize<TextStyle>.() -> TextStyle): TextStyle =
+fun headlineStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Headline }): TextStyle =
     Typographies.Headline.block()
 
 @Composable
-fun title(block: UiSize<TextStyle>.() -> TextStyle): TextStyle =
+fun titleStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Title }): TextStyle =
     Typographies.Title.block()
 
 @Composable
-fun body(block: UiSize<TextStyle>.() -> TextStyle): TextStyle =
+fun bodyStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Body }): TextStyle =
     Typographies.Body.block()
 
 @Composable
-fun label(block: UiSize<TextStyle>.() -> TextStyle): TextStyle =
+fun labelStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Label }): TextStyle =
     Typographies.Label.block()
+
+@Composable
+fun textStyleDefault(
+    block: @Composable ThemeTypographies.() -> UiSize<TextStyle>
+): @Composable UiSize<TextStyle>.() -> TextStyle =
+    @Composable { textStyle { block().medium } }

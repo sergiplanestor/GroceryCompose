@@ -20,7 +20,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.splanes.grocery.ui.R
 import com.splanes.grocery.ui.component.spacer.column.Space
-import com.splanes.grocery.ui.utils.resources.body
+import com.splanes.grocery.ui.utils.resources.bodyStyle
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.shape
@@ -47,7 +47,7 @@ fun AuthLoaderComponent(
             Space { medium }
             Text(
                 text = message,
-                style = body { large }
+                style = bodyStyle { large }
             )
             Space { medium }
             LottieAnimation(

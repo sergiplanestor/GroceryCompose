@@ -6,4 +6,6 @@
     <string name="lets_go">Let\'s go</string>
     <string name="field_error_mandatory">This field is required</string>
     <string name="field_error_invalid_email">Invalid email format, please check it</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
 </resources>

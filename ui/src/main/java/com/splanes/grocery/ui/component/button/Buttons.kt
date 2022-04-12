@@ -15,7 +15,7 @@ import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.shape
-import com.splanes.grocery.ui.utils.resources.title
+import com.splanes.grocery.ui.utils.resources.titleStyle
 
 object Buttons {
 
@@ -25,7 +25,7 @@ object Buttons {
         enabled: Boolean,
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
-        textStyle: TextStyle = title { small },
+        textStyle: TextStyle = titleStyle { small },
         textColor: Color = color { onPrimary },
         backgroundColor: Color = color { primary },
         colors: ButtonColors = ButtonDefaults.textButtonColors(

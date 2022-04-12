@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="products_add_new_form_title">New product</string>
+    <string name="products_add_new_form_description">Complete the form below and get a new grocery product to add to
+        your grocery. Remember, the more info filled, more precise and better will be your experience 🤩
+    </string>
+</resources>

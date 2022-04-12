@@ -6,10 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.splanes.grocery.ui.feature.auth.component.subcomponents.AuthAutoSignInComponent
+import com.splanes.grocery.ui.feature.auth.component.subcomponents.AuthHeaderComponent
 import com.splanes.grocery.ui.feature.auth.contract.AuthEvent
 import com.splanes.grocery.ui.feature.auth.contract.AuthRedirections
 import com.splanes.grocery.ui.feature.auth.contract.AuthUiModel
-import com.splanes.grocery.ui.feature.auth.viewmodel.AuthComponentViewModel
+import com.splanes.grocery.ui.feature.auth.viewmodel.AuthViewModel
 import com.splanes.grocery.ui.utils.anim.tween
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.color
@@ -20,7 +22,7 @@ import timber.log.Timber
 
 @Composable
 fun GroceryAuthComponent(onNavToDashboard: () -> Unit) {
-    val viewModel = hiltViewModel<AuthComponentViewModel>()
+    val viewModel = hiltViewModel<AuthViewModel>()
     val uiEvent: (AuthEvent) -> Unit = viewModel::onUiEvent
 
     with (viewModel.uiSideEffect) {

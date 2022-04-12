@@ -2,6 +2,8 @@ package com.splanes.grocery.ui.infra.activity
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.splanes.grocery.ui.feature.auth.navigation.builder.AuthNavigationBuilder
+import com.splanes.grocery.ui.feature.mainscreen.navigation.builder.MainScreenNavigationBuilder
 import com.splanes.grocery.ui.infra.activity.navigation.GroceryNavigatorComponent
 import com.splanes.grocery.ui.infra.navigation.builder.NavigationBuilder
 import com.splanes.grocery.ui.utils.resources.color
@@ -15,7 +17,17 @@ import javax.inject.Inject
 class GroceryActivity : BaseComponentActivity<GroceryActivityViewModel>() {
 
     @Inject
-    lateinit var navigationBuilders: List<NavigationBuilder>
+    lateinit var authNavigationBuilder: AuthNavigationBuilder
+
+    @Inject
+    lateinit var mainScreenNavigationBuilder: MainScreenNavigationBuilder
+
+    private val navigationBuilders: List<NavigationBuilder> by lazy {
+        listOf(
+            authNavigationBuilder,
+            mainScreenNavigationBuilder
+        )
+    }
 
     override val initialStatusBarColor: StatusBarColors
         @Composable

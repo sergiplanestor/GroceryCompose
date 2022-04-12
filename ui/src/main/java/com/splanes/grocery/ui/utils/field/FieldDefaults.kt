@@ -21,10 +21,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
 import com.splanes.grocery.ui.utils.resources.alpha
-import com.splanes.grocery.ui.utils.resources.body
+import com.splanes.grocery.ui.utils.resources.bodyStyle
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.shape
-import com.splanes.grocery.ui.utils.resources.title
+import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
 import com.splanes.toolkit.compose.ui.components.feature.navhost.graph.transition.fadeIn
@@ -148,7 +148,7 @@ object FieldDefaults {
         Text(
             modifier = modifier,
             text = text,
-            style = body { medium },
+            style = bodyStyle { medium },
             color = colors.labelColor(
                 enabled = enabled,
                 error = error,
@@ -167,7 +167,7 @@ object FieldDefaults {
         Text(
             modifier = modifier,
             text = text,
-            style = title { medium },
+            style = titleStyle { medium },
             color = colors.placeholderColor(enabled = enabled).value
         )
     }

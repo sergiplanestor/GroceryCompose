@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="markets">Markets</string>
+    <string name="products">Products</string>
+    <string name="grocery">Grocery</string>
+    <string name="templates">Templates</string>
+    <string name="account">Account</string>
+</resources>

@@ -15,6 +15,6 @@ class AuthNavigationBuilder @Inject constructor() : NavigationBuilder {
         NavGraphDestination(
             route = navGraphRoute { Auth },
             transitions = NavGraphTransition.Fade(),
-            builder = { GroceryAuthComponent { navController.redirect { Dashboard } } }
+            builder = { GroceryAuthComponent { navController.redirect(options = { launchSingleTop }) { MainScreen } } }
         )
 }

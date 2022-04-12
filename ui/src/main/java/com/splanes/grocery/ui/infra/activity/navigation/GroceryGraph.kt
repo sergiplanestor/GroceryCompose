@@ -1,23 +1,24 @@
 package com.splanes.grocery.ui.infra.activity.navigation
 
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigator
+import androidx.navigation.navOptions
 
 object GroceryGraph {
 
     class Route internal constructor() {
         val Auth = "Grocery/Auth"
-        val Dashboard = "Grocery/Dashboard"
+        val MainScreen = "Grocery/Main/"
 
         val Start = Auth
     }
 
     fun NavHostController.redirect(
-        navOptions: NavOptions? = null,
-        navigatorExtras: Navigator.Extras? = null,
+        options: (NavOptionsBuilder.() -> Unit)? = null,
+        extras: Navigator.Extras? = null,
         block: Route.() -> String
-    ) = navigate(block(Route()), navOptions, navigatorExtras)
+    ) = navigate(block(Route()), options?.run(::navOptions), extras)
 
 }
 

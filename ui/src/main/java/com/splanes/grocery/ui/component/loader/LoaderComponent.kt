@@ -21,18 +21,18 @@ import com.splanes.grocery.ui.component.anim.LottieComponent
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
-import com.splanes.grocery.ui.utils.resources.title
+import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 
 @Composable
 fun LoaderComponent(
     modifier: Modifier = Modifier,
-    order: LoaderDefaults.Order = LoaderDefaults.AnimBeforeText,
+    order: Loaders.Order = Loaders.AnimBeforeText,
     message: String? = null,
-    messageStyle: TextStyle = title { large },
+    messageStyle: TextStyle = titleStyle { large },
     messageAlign: TextAlign = TextAlign.Center,
     @RawRes animRawRes: Int? = null,
-    animSize: Dp = LoaderDefaults.animSize { medium },
+    animSize: Dp = Loaders.animSize { medium },
     containerShape: Shape = RectangleShape,
     contentColor: Color = color { onTertiaryContainer },
     containerColor: Color = color { tertiaryContainer },
@@ -51,8 +51,8 @@ fun LoaderComponent(
     },
     content: @Composable ColumnScope.() -> Unit = {
         when (order) {
-            LoaderDefaults.AnimBeforeText -> animContent to messageContent
-            LoaderDefaults.TextBeforeAnim -> messageContent to animContent
+            Loaders.AnimBeforeText -> animContent to messageContent
+            Loaders.TextBeforeAnim -> messageContent to animContent
         }.let { (first, second) ->
             val hasFirst = first != null
             val hasSecond = second != null
@@ -89,7 +89,7 @@ fun LoaderMessageComponent(
     text: String,
     textColor: Color,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = title { large },
+    textStyle: TextStyle = titleStyle { large },
     textAlign: TextAlign = TextAlign.Center
 ) {
     Text(
