@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets.UiModel
 import com.splanes.grocery.ui.component.icons.Icons
-import com.splanes.grocery.ui.component.icons.iconRounded
+import com.splanes.grocery.ui.component.icons.rounded
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.grocery.ui.utils.ripple.RippleStyle
 import com.splanes.grocery.utils.scope.orNull
+import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 
 @Composable
 fun BottomSheet(
@@ -75,11 +76,11 @@ fun BottomSheetContainer(
 fun BottomSheetCloseButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: Icons.Source = iconRounded { Close },
-    tint: Color = color { onSurface },
-    size: Dp = Icons.SizeMedium.dp
+    icon: Icons.Source = Icons.rounded { Close },
+    tint: Color = color { onSurface.alpha(.8) },
+    size: Dp = Icons.SizeSmall.dp
 ) {
-    RippleStyle(color = color { onPrimary }) {
+    RippleStyle(color = color { primary }) {
         Icons.Icon(
             modifier = modifier,
             source = icon,

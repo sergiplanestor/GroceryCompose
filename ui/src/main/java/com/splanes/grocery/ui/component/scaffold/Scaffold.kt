@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarHost
-import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,23 +22,19 @@ import androidx.compose.ui.Modifier
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheet
 import com.splanes.grocery.ui.component.scaffold.Scaffolds.DialogUiState
 import com.splanes.grocery.ui.component.scaffold.Scaffolds.LoaderUiState
-import com.splanes.grocery.ui.component.scaffold.Scaffolds.SideEffect
-import com.splanes.grocery.ui.component.scaffold.Scaffolds.SideEffect.BottomSheet
-import com.splanes.grocery.ui.component.scaffold.Scaffolds.SideEffect.Snackbar
 import com.splanes.grocery.ui.component.scaffold.Scaffolds.bottomSheetUiModel
 import com.splanes.grocery.ui.component.scaffold.Scaffolds.uiModel
 import com.splanes.grocery.ui.utils.anim.tween
-import com.splanes.grocery.ui.utils.bottomsheet.rememberBottomSheetState
 import com.splanes.grocery.ui.utils.resources.same
-import com.splanes.grocery.ui.utils.snackbar.rememberSnackbarHostState
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Colors
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Scaffold(
     viewModel: ScaffoldViewModel,
+    scaffoldState: BottomSheetScaffoldState,
     topBar: @Composable (Scaffolds.UiModel) -> Unit = {},
     bottomBar: @Composable (Scaffolds.UiModel) -> Unit = {},
     snackbar: @Composable (Scaffolds.UiModel, SnackbarData) -> Unit = { _, _ -> },
@@ -49,33 +44,16 @@ fun Scaffold(
 ) {
     val scaffoldUiState by viewModel.uiState
 
-    val bottomSheetState = rememberBottomSheetState()
-    val snackbarHostState = rememberSnackbarHostState()
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = bottomSheetState,
-        snackbarHostState = snackbarHostState
-    )
-
     val coroutineScope = rememberCoroutineScope()
 
-    val uiSideEffectState = viewModel.uiSideEffectFlow.collectAsNullableState()
+    //viewModel.scaffoldState = scaffoldState
+
+    val uiSideEffect by viewModel.uiSideEffectFlow.collectAsState(initial = Scaffolds.SideEffect.Empty)
     val containerColor = scaffoldUiState.containerUiModel.color(Colors)
     val containerColorAnim = remember { Animatable(containerColor) }
 
-    LaunchedEffect(uiSideEffectState) {
-        coroutineScope.launch {
-            when (val effect = uiSideEffectState.value) {
-                is BottomSheet -> { bottomSheetState.animateTo(effect.state) }
-                Snackbar -> {
-                    with(scaffoldUiState.snackbarUiModel) {
-                        snackbarHostState.showSnackbar(message, actionLabel, duration)
-                    }
-                }
-                null -> {
-                    // Nothing to do
-                }
-            }
-        }
+    LaunchedEffect(uiSideEffect) {
+        coroutineScope.uiSideEffects(uiSideEffect, scaffoldState, scaffoldUiState)
     }
 
     LaunchedEffect(!containerColor.same(containerColorAnim.value)) {
@@ -93,7 +71,7 @@ fun Scaffold(
         val uiModel = uiModel()
         BottomSheetScaffold(
             scaffoldState = scaffoldState,
-            sheetShape = bottomSheetUiState.shape(bottomSheetState),
+            sheetShape = bottomSheetUiState.shape(scaffoldState.bottomSheetState),
             sheetContent = { BottomSheet(uiModel = bottomSheetUiModel()) },
             sheetPeekHeight = bottomSheetUiState.peekHeight,
             topBar = { topBar(uiModel) },
@@ -117,7 +95,7 @@ fun Scaffold(
                     )
 
                     SnackbarHost(
-                        hostState = snackbarHostState,
+                        hostState = scaffoldState.snackbarHostState,
                         snackbar = { snackbarData -> snackbar(uiModel, snackbarData) }
                     )
                 }
@@ -168,6 +146,29 @@ private fun ScaffoldDialog(
     )
 }
 
-@Composable
-private fun Flow<SideEffect>.collectAsNullableState(): State<SideEffect?> =
-    collectAsState(initial = null)
+@OptIn(ExperimentalMaterialApi::class)
+private fun CoroutineScope.uiSideEffects(
+    effect: Scaffolds.SideEffect,
+    state: BottomSheetScaffoldState,
+    uiState: Scaffolds.UiState
+) = launch {
+    when (effect) {
+        is Scaffolds.SideEffect.BottomSheetStateChanged -> {
+            with(uiState.bottomSheetUiState) {
+                if (uiModel.id.isNotBlank()) {
+                    //state.bottomSheetState.animateTo(sheetValue)
+                }/* else {
+                    throwMessageNonFatal { "Attempt to launch bottom sheet without id associated. Invalid behavior!" }
+                }*/
+            }
+        }
+        Scaffolds.SideEffect.SnackbarStateChanged -> {
+            with(uiState.snackbarUiModel) {
+                state.snackbarHostState.showSnackbar(message, actionLabel, duration)
+            }
+        }
+        Scaffolds.SideEffect.Empty -> {
+            // Nothing to do
+        }
+    }
+}

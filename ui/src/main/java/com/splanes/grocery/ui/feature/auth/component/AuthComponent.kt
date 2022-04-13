@@ -8,7 +8,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.splanes.grocery.ui.feature.auth.component.subcomponents.AuthAutoSignInComponent
 import com.splanes.grocery.ui.feature.auth.component.subcomponents.AuthHeaderComponent
+import com.splanes.grocery.ui.feature.auth.component.subcomponents.AuthSignUpComponent
 import com.splanes.grocery.ui.feature.auth.contract.AuthEvent
+import com.splanes.grocery.ui.feature.auth.contract.AuthEvent.SignUp
 import com.splanes.grocery.ui.feature.auth.contract.AuthRedirections
 import com.splanes.grocery.ui.feature.auth.contract.AuthUiModel
 import com.splanes.grocery.ui.feature.auth.viewmodel.AuthViewModel
@@ -82,7 +84,7 @@ fun AuthActivityContent(
             username = model.username,
             email = model.email,
             onSignUp = { username, email ->
-                uiEvent(AuthEvent.SignUp(username = username, email = email))
+                uiEvent(SignUp(username = username, email = email))
             },
             scrollState = scrollState
         )

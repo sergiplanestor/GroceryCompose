@@ -18,6 +18,7 @@ object BottomSheets {
     val Collapsed: BottomSheetValue = BottomSheetValue.Collapsed
 
     data class UiModel(
+        val id: String = "NO-ID",
         val scrollable: Boolean = true,
         val alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
         val uiContent: UiContent = UiContent(content = {})
@@ -29,6 +30,7 @@ object BottomSheets {
         val content: @Composable ColumnScope.(ScrollState?) -> Unit
     )
 
+    // FIXME - Don't work as expected, check it!
     @Composable
     fun BottomSheetState.shapeCornerSize(full: Int = 0, idle: Int = 16): Dp = if (targetValue == Expanded) {
         idle - (idle * this.progress.fraction)

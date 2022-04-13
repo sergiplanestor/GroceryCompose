@@ -112,6 +112,3 @@ fun Icons.rounded(block: IcRounded.() -> ImageVector): Icons.Vector = Icons.Vect
 fun Icons.sharp(block: IcSharp.() -> ImageVector): Icons.Vector = Icons.Vector(block(IcSharp))
 fun Icons.outlined(block: IcOutlined.() -> ImageVector): Icons.Vector = Icons.Vector(block(IcOutlined))
 fun Icons.twoTone(block: IcTwoTone.() -> ImageVector): Icons.Vector = Icons.Vector(block(IcTwoTone))
-
-fun iconRounded(block: IcRounded.() -> ImageVector): Icons.Vector =
-    Icons.Vector(block(IcRounded))

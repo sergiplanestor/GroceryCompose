@@ -1,4 +1,4 @@
-package com.splanes.grocery.ui.feature.auth.component
+package com.splanes.grocery.ui.feature.auth.component.subcomponents
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -13,7 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.AlternateEmail
 import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.runtime.Composable
@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.anim.AnimationSideEffect
 import com.splanes.grocery.ui.component.button.Buttons
 import com.splanes.grocery.ui.component.form.model.Forms
+import com.splanes.grocery.ui.component.form.model.Forms.Error
 import com.splanes.grocery.ui.component.form.model.Forms.isError
 import com.splanes.grocery.ui.component.form.model.Forms.satisfies
+import com.splanes.grocery.ui.component.icons.rounded
 import com.splanes.grocery.ui.component.spacer.VerticalSpace
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
@@ -43,6 +45,7 @@ import com.splanes.grocery.ui.utils.anim.scrollTo
 import com.splanes.grocery.ui.utils.anim.tween
 import com.splanes.grocery.ui.utils.field.FieldDefaults
 import com.splanes.grocery.ui.utils.field.FieldType
+import com.splanes.grocery.ui.utils.field.FieldType.Email
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
@@ -179,9 +182,9 @@ fun UsernameTextField(
         onChange = onChange,
         onFocused = onFocused,
         label = string { Strings.username },
-        icon = Icons.Rounded.Badge,
+        icon = Rounded.Badge,
         isError = state.isError(),
-        errorMessage = (state as? Forms.Error<String>)?.message,
+        errorMessage = (state as? Error<String>)?.message,
         keyboardOptions = FieldDefaults.keyboardOption(FieldType.Text(), ImeAction.Next)
     )
 }
@@ -197,10 +200,10 @@ fun EmailTextField(
         onChange = onChange,
         onFocused = onFocused,
         label = string { Strings.email },
-        icon = Icons.Rounded.AlternateEmail,
+        icon = com.splanes.grocery.ui.component.icons.Icons.rounded { AlternateEmail }.value,
         isError = state.isError(),
-        errorMessage = (state as? Forms.Error<String>)?.message,
-        keyboardOptions = FieldDefaults.keyboardOption(FieldType.Email, ImeAction.Done)
+        errorMessage = (state as? Error<String>)?.message,
+        keyboardOptions = FieldDefaults.keyboardOption(Email, ImeAction.Done)
     )
 }
 

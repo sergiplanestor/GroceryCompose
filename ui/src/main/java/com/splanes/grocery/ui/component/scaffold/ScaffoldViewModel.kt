@@ -1,6 +1,5 @@
 package com.splanes.grocery.ui.component.scaffold
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -57,39 +56,40 @@ open class ScaffoldViewModel @Inject constructor() : ViewModel(), CoroutineScope
         }
     }
 
-    private fun emitSideEffect(builder: () -> Scaffolds.SideEffect) {
-        launch { uiSideEffectChannel.send(builder()) }
-    }
-
     fun updateUiState(updater: Scaffolds.UiState.() -> Scaffolds.UiState) {
-        val newState = scaffoldUiState.updater()
-        listOf(
-            newState.containerUiState,
-            newState.bottomSheetUiState,
-            newState.snackbarUiState
-        ).forEach { it.handleUpdateSideEffect() }
-        uiStateMutable.value = newState
+        scaffoldUiState.updater().run {
+            uiStateMutable.value = this
+            forEachSideEffectLauncher(::handleSideEffectFromUpdate)
+        }
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
-    private fun SubcomponentUiState<*>.handleUpdateSideEffect() = takeIf { it.isSideEffectUpdate() }?.run {
-        when (this) {
-            is Scaffolds.BottomSheetUiState -> Scaffolds.SideEffect.BottomSheet(state)
-            is Scaffolds.SnackbarUiState -> Scaffolds.SideEffect.Snackbar
-            else -> null
-        }?.let { effect -> emitSideEffect { effect } }
+    private fun Scaffolds.UiState.forEachSideEffectLauncher(
+        action: (SubcomponentUiState<*>) -> Unit
+    ) {
+        listOf(bottomSheetUiState, snackbarUiState).forEach(action)
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
-    private fun SubcomponentUiState<*>.isSideEffectUpdate(): Boolean =
+    private fun handleSideEffectFromUpdate(subcomponentUiState: SubcomponentUiState<*>) {
+        if (subcomponentUiState.isSideEffectLaunched()) {
+            when (subcomponentUiState) {
+                is Scaffolds.BottomSheetUiState -> Scaffolds.SideEffect.BottomSheetStateChanged
+                is Scaffolds.SnackbarUiState -> Scaffolds.SideEffect.SnackbarStateChanged
+                else -> null
+            }?.let { effect -> emitSideEffect { effect } }
+        }
+    }
+
+    private fun SubcomponentUiState<*>.isSideEffectLaunched(): Boolean =
         when (this) {
-            is Scaffolds.BottomSheetUiState -> {
-                state != scaffoldUiState.bottomSheetUiState.state
-            }
-            is Scaffolds.SnackbarUiState -> {
-                scaffoldUiState.snackbarUiState.visible && visible != scaffoldUiState.snackbarUiState.visible
-            }
-            else -> false
+            is Scaffolds.SnackbarUiState -> visible != scaffoldUiState.snackbarUiState.visible
+            else -> this is Scaffolds.BottomSheetUiState
         }
 
+    private fun emitSideEffect(builder: () -> Scaffolds.SideEffect) {
+        builder().let { effect ->
+            with(uiSideEffectChannel) {
+                if (!trySend(effect).isSuccess) launch { send(effect) }
+            }
+        }
+    }
 }

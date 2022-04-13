@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -31,25 +33,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.splanes.grocery.ui.component.bottomsheet.BottomSheets
 import com.splanes.grocery.ui.component.icons.Icons
 import com.splanes.grocery.ui.component.icons.rounded
 import com.splanes.grocery.ui.component.spacer.row.Space
 import com.splanes.grocery.ui.feature.mainscreen.viewmodel.MainScreenViewModel
 import com.splanes.grocery.ui.feature.products.component.subcomponent.productFormBottomSheetUiState
-import com.splanes.grocery.ui.utils.resources.bodyStyle
 import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.grocery.utils.scope.apply
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProductsComponent(
     navHostController: NavHostController,
-    sharedViewModel: MainScreenViewModel,
-
-    ) {
-
+    mainScreenViewModel: MainScreenViewModel,
+    onBottomSheet: (BottomSheetValue) -> Unit
+) {
     val productsScrollState = rememberScrollState()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -61,9 +63,7 @@ fun ProductsComponent(
             // Find / Sort / Group products ...
 
             // Product list
-            for (i in 0..100) {
-                Text(text = "Item $i", style = bodyStyle())
-            }
+
         }
         AddProductFloatingButton(
             modifier = Modifier
@@ -71,7 +71,14 @@ fun ProductsComponent(
                 .padding(bottom = dp { large }),
             scrollState = productsScrollState,
             onClick = {
-                sharedViewModel.updateScaffoldState { copy(bottomSheetUiState = productFormBottomSheetUiState()) }
+                mainScreenViewModel.onBottomSheetStateChanged {
+                    copy(
+                        bottomSheetUiState = productFormBottomSheetUiState(
+                            onClose = { onBottomSheet(BottomSheets.Collapsed) }
+                        )
+                    )
+                }
+                onBottomSheet(BottomSheets.Expanded)
             }
         )
     }
@@ -106,18 +113,21 @@ fun AddProductFloatingButton(
         onClick = onClick,
         content = {
             Row(
-                modifier = modifier.padding(all = dp { large }),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Icons.Icon(
-                    modifier = Modifier.padding(vertical = dp { mediumSmall }, horizontal = dp { medium}),
+                    modifier = Modifier.padding(vertical = dp { mediumSmall }, horizontal = dp { medium }),
                     source = Icons.rounded { Add },
                     size = iconSize,
                     color = iconColor
                 )
                 AnimatedVisibility(
-                    modifier = Modifier.padding(vertical = dp { mediumSmall }, horizontal = dp { medium}),
+                    modifier = Modifier.padding(
+                        top = dp { mediumSmall },
+                        bottom = dp { mediumSmall },
+                        end = dp { medium }
+                    ),
                     visible = !scrollState.isScrollInProgress,
                     enter = fadeIn(animationSpec = tween(durationMillis = 750)) +
                             expandHorizontally(
@@ -126,7 +136,7 @@ fun AddProductFloatingButton(
                                     stiffness = Spring.StiffnessMedium
                                 )
                             ),
-                    exit = fadeOut(animationSpec = tween(durationMillis = 1000)) +
+                    exit = fadeOut(animationSpec = tween(durationMillis = 750)) +
                             shrinkHorizontally(
                                 animationSpec = spring(
                                     dampingRatio = Spring.DampingRatioLowBouncy,

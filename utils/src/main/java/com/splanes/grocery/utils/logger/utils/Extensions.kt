@@ -4,6 +4,9 @@ import timber.log.Timber
 
 object EmptyError : Throwable(message = "Exception thrown with empty error...")
 
+fun throwMessageNonFatal(message: () -> String? = { EmptyError.message }) =
+    runCatching { throwMessage<Nothing>(message) }
+
 fun <T> throwError(
     message: (() -> String)? = null,
     throwable: () -> Throwable?

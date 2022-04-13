@@ -23,7 +23,7 @@ allprojects {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.1.2")
+    implementation("com.android.tools.build:gradle:7.1.3")
     implementation(kotlin("gradle-plugin", version = "1.6.10"))
     implementation("com.google.gms:google-services:4.3.10")
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.8.1")

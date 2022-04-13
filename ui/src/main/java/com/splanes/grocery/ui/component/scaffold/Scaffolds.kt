@@ -8,9 +8,13 @@ import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
+import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.BottomSheetValue.Expanded
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -33,15 +37,16 @@ object Scaffolds {
     data class UpdateEvent<State : SubcomponentUiState<*>>(val uiState: State)
 
     sealed class SideEffect {
-        data class BottomSheet(val state: BottomSheetValue) : SideEffect()
-        object Snackbar : SideEffect()
+        object Empty: SideEffect()
+        object BottomSheetStateChanged : SideEffect()
+        object SnackbarStateChanged : SideEffect()
     }
 
     data class UiState(
         val topAppBarUiState: TopAppBarUiState = TopAppBarUiState.empty(),
         val containerUiState: ContainerUiState = ContainerUiState.empty(),
         val bottomBarUiState: BottomBarUiState = BottomBarUiState.empty(),
-        val bottomSheetUiState: BottomSheetUiState = BottomSheetUiState.empty(),
+        val bottomSheetUiState: BottomSheetUiState = BottomSheetUiState(),
         val snackbarUiState: SnackbarUiState = SnackbarUiState.empty(),
         val dialogUiState: DialogUiState = DialogUiState.empty(),
         val loaderUiState: LoaderUiState = LoaderUiState.empty()
@@ -79,7 +84,7 @@ object Scaffolds {
                 topAppBarUiState = TopAppBarUiState.empty(),
                 containerUiState = ContainerUiState.empty(),
                 bottomBarUiState = BottomBarUiState.empty(),
-                bottomSheetUiState = BottomSheetUiState.empty(),
+                bottomSheetUiState = BottomSheetUiState(),
                 snackbarUiState = SnackbarUiState.empty(),
                 dialogUiState = DialogUiState.empty(),
                 loaderUiState = LoaderUiState.empty()
@@ -149,16 +154,16 @@ object Scaffolds {
     }
 
     data class BottomSheetUiState(
-        override val uiModel: BottomSheets.UiModel,
+        override val uiModel: BottomSheets.UiModel = BottomSheets.UiModel(),
         val shape: @Composable (BottomSheetState) -> Shape = { bottomSheetState ->
             TopRoundedCornerShape(bottomSheetState.shapeCornerSize(idle = 24))
         },
         val peekHeight: Dp = 0.dp,
-        val state: BottomSheetValue = BottomSheetValue.Collapsed
+        val sheetValue: BottomSheetValue = BottomSheets.Collapsed
     ) : SubcomponentUiState<BottomSheets.UiModel> {
-        companion object {
-            fun empty(): BottomSheetUiState = BottomSheetUiState(uiModel = BottomSheets.UiModel())
-        }
+        fun expandedUiState(): BottomSheetUiState = copy(sheetValue = BottomSheets.Expanded)
+        fun collapsedUiState(): BottomSheetUiState = copy(sheetValue = BottomSheets.Collapsed)
+        val expanded: Boolean = sheetValue == Expanded
     }
 
     data class SnackbarUiState(
@@ -205,4 +210,10 @@ object Scaffolds {
             fun empty(): LoaderUiState = LoaderUiState(uiModel = Loaders.UiModel.empty())
         }
     }
+
+    @Composable
+    fun bottomSheetScaffoldState(): BottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(initialValue = BottomSheets.Collapsed),
+        snackbarHostState = SnackbarHostState()
+    )
 }
