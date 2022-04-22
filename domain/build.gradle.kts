@@ -4,6 +4,7 @@ plugins {
         GradlePlugin.Kapt,
         GradlePlugin.Hilt
     ).forEach(::id)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {

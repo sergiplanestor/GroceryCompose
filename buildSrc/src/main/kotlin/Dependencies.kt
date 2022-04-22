@@ -31,7 +31,7 @@ object DependencyVersion {
     const val toolkitUiTheme = "$toolkit-CBA"
     const val toolkitBaseArch = "$toolkit-CBA"
 
-    const val calendarComposeComponent = "0.3.0"
+    const val androidxEmoji = "1.2.0-alpha03"
 }
 
 object Dependency {
@@ -91,8 +91,9 @@ object Dependency {
     const val toolkitUiTheme = "${toolkit}:theme:${DependencyVersion.toolkitUiTheme}"
     const val toolkitBaseArch = "${toolkit}:base-arch:${DependencyVersion.toolkitBaseArch}"
 
-    const val calendarComposeComponent =
-        "io.github.boguszpawlowski.composecalendar:composecalendar:${DependencyVersion.calendarComposeComponent}"
+    const val androidxEmoji = "androidx.emoji2:emoji2:${DependencyVersion.androidxEmoji}"
+    const val androidxEmojiViews = "androidx.emoji2:emoji2-views:${DependencyVersion.androidxEmoji}"
+    const val androidxEmojiViewsHelper = "androidx.emoji2:emoji2-views-helper:${DependencyVersion.androidxEmoji}"
 }
 
 fun DependencyHandler.androidCore() {
@@ -109,6 +110,12 @@ fun DependencyHandler.androidExtensions() {
 
 fun DependencyHandler.androidViewModel() {
     impl(Dependency.androidxViewModel)
+}
+
+fun DependencyHandler.emojiLibs() {
+    impl(Dependency.androidxEmoji)
+    impl(Dependency.androidxEmojiViews)
+    impl(Dependency.androidxEmojiViewsHelper)
 }
 
 fun DependencyHandler.ktxCoroutines() {
@@ -212,10 +219,6 @@ fun DependencyHandler.test() {
     test(Test.junit)
     test(Test.androidxJUnit, isUiTest = true)
     test(Test.androidxEspressoCore, isUiTest = true)
-}
-
-fun DependencyHandler.calendarComponent() {
-    impl(Dependency.calendarComposeComponent)
 }
 
 object TestVersion {

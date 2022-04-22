@@ -65,7 +65,7 @@ import com.splanes.grocery.ui.utils.resources.Drawables
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.labelStyle
 import com.splanes.grocery.ui.utils.resources.shape
@@ -124,8 +124,8 @@ fun ProductFormBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(color = color { primary }.alpha(.15)),
-            color = color { primary }.alpha(.15)
+                .background(color = palette { primary }.alpha(.15)),
+            color = palette { primary }.alpha(.15)
         )
         Space { medium }
         ProductFormNameField(
@@ -185,7 +185,7 @@ fun ProductFormDescription() {
     Text(
         text = string { Strings.products_add_new_form_description },
         style = bodyStyle(),
-        color = color { onSurface },
+        color = palette { onSurface },
         textAlign = TextAlign.Justify
     )
 }
@@ -247,12 +247,12 @@ fun ShowMoreOptionalFieldsButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    RippleStyle(color = color { secondary }) {
+    RippleStyle(color = palette { secondary }) {
         TextButton(
             modifier = modifier,
             contentPadding = PaddingValues(16.dp),
             colors = ButtonDefaults.textButtonColors(
-                contentColor = color { secondary },
+                contentColor = palette { secondary },
                 containerColor = Color.Transparent
             ),
             shape = shape(size = 16),
@@ -261,7 +261,7 @@ fun ShowMoreOptionalFieldsButton(
             Text(
                 text = string { textRes },
                 style = titleStyle { small },
-                color = color { secondary }
+                color = palette { secondary }
             )
         }
     }
@@ -375,10 +375,10 @@ fun ProductFormTextField(
     var isClearIconVisible by remember { mutableStateOf(false) }
     var isErrorMessageVisible by remember { mutableStateOf(false) }
     val colors = FieldDefaults.colorsOutlined(
-        borderFocusedColor = color { primary },
-        borderUnfocusedColor = color { onSurface },
-        textColor = color { onSurface },
-        errorColor = color { error.composite(onSurface, .75) },
+        borderFocusedColor = palette { primary },
+        borderUnfocusedColor = palette { onSurface },
+        textColor = palette { onSurface },
+        errorColor = palette { error.composite(onSurface, .75) },
     )
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -432,7 +432,7 @@ fun ProductFormTextField(
                     modifier = Modifier.padding(vertical = dp { small }),
                     text = string { text },
                     style = labelStyle { medium },
-                    color = color {
+                    color = palette {
                         error.composite(
                             onSurface,
                             .75

@@ -8,4 +8,15 @@
     <string name="field_error_invalid_email">Invalid email format, please check it</string>
     <string name="show_more">Show more</string>
     <string name="show_less">Show less</string>
+    <string name="select">Select</string>
+    <string name="done">Done</string>
+    <string name="gotcha">Gotcha!</string>
+    <string name="search">Search</string>
+    <string name="fill">Fill</string>
+    <string name="dam">Ouch damn it!</string>
+    <string name="permissions_needed">Those requested permissions were needed to go ahead, you have to granted to get
+        this working.\nWould you reconsider it?
+    </string>
+
+    <string name="remember_selected_option">Remember selected option</string>
 </resources>

@@ -1,7 +1,10 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     appPlugins(GradlePlugin.Kapt, GradlePlugin.Hilt).forEach(::id)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -9,6 +12,12 @@ android {
     namespace = "com.splanes.grocery"
 
     applyAppDefaultConfig()
+
+    defaultConfig {
+        manifestPlaceholders["mapsApiKey"] = Properties().apply {
+            load(file("${rootDir.absolutePath}/local.properties").inputStream())
+        }.getProperty("MAPS_API_MEY")
+    }
 
     applyCompileOptions()
 
@@ -34,5 +43,6 @@ dependencies {
     compose()
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.android.libraries.places:places:2.6.0")
     test()
 }

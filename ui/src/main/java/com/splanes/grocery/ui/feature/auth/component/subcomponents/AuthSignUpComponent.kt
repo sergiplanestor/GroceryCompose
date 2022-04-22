@@ -49,7 +49,7 @@ import com.splanes.grocery.ui.utils.field.FieldType.Email
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.dpValue
 import com.splanes.grocery.ui.utils.resources.headlineStyle
@@ -117,14 +117,14 @@ fun WelcomeText() {
     Text(
         text = string { Strings.user_welcome_to_app },
         style = headlineStyle { medium },
-        color = color { onPrimary },
+        color = palette { onPrimary },
         textAlign = TextAlign.Center
     )
     VerticalSpace { mediumSmall }
     Text(
         text = string { Strings.user_nice_to_meet_you },
         style = headlineStyle { small },
-        color = color { onPrimary },
+        color = palette { onPrimary },
         textAlign = TextAlign.Center
     )
 }
@@ -138,7 +138,7 @@ fun SignUpFormCard(
         modifier = Modifier
             .padding(start = dp { small }, end = dp { small })
             .alpha(alpha),
-        color = color { surface },
+        color = palette { surface },
         shape = shape(12),
         elevation = 8.dp,
         content = {
@@ -155,14 +155,14 @@ fun SignUpFormCard(
                     modifier = Modifier.padding(horizontal = dp { mediumSmall }),
                     text = string { Strings.user_sign_up },
                     style = headlineStyle { medium },
-                    color = color { onSurface },
+                    color = palette { onSurface },
                 )
                 Space { small }
                 Text(
                     modifier = Modifier.padding(horizontal = dp { mediumSmall }),
                     text = string { Strings.user_sign_up_form },
                     style = titleStyle { medium },
-                    color = color { onSurface }
+                    color = palette { onSurface }
                 )
                 Space { mediumLarge }
                 form()
@@ -217,8 +217,8 @@ fun SubmitButton(
         modifier = modifier,
         text = string { Strings.lets_go },
         enabled = enabled,
-        textColor = color { onPrimary },
-        backgroundColor = color { primary.composite(surface, .8) },
+        textColor = palette { onPrimary },
+        backgroundColor = palette { primary.composite(surface, .8) },
         onClick = onClick
     )
 }
@@ -239,8 +239,8 @@ fun Field(
     var isClearIconVisible by remember { mutableStateOf(false) }
     var isErrorMessageVisible by remember { mutableStateOf(isError && errorMessage != null) }
     val colors = FieldDefaults.colorsOutlined(
-        textColor = color { onSurface },
-        errorColor = color { error.composite(onSurface, .75) },
+        textColor = palette { onSurface },
+        errorColor = palette { error.composite(onSurface, .75) },
     )
 
     Column(modifier = modifier) {
@@ -293,7 +293,7 @@ fun Field(
                     modifier = Modifier.padding(vertical = dp { small }),
                     text = string { text },
                     style = labelStyle { medium },
-                    color = color {
+                    color = palette {
                         error.composite(
                             onSurface,
                             .75

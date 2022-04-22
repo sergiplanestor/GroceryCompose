@@ -12,7 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.splanes.grocery.utils.logger.utils.throwMessage
+import com.splanes.grocery.utils.scope.apply
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 import com.splanes.toolkit.compose.ui.theme.feature.typographies.ThemeTypographies
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Body
@@ -47,7 +49,7 @@ fun <T> resource(block: Resources.() -> T): T =
     LocalContext.current.resources.block()
 
 @Composable
-fun color(block: ThemeColorScheme.() -> Color): Color =
+fun palette(block: ThemeColorScheme.() -> Color): Color =
     Colors.run(block)
 
 @Composable
@@ -84,31 +86,32 @@ fun viewport(block: UiSize.Extended<Dp>.() -> Dp): Dp =
     dp(isComponent = false, block)
 
 @Composable
-fun textStyle(block: @Composable ThemeTypographies.() -> TextStyle): TextStyle =
-    Typographies.block()
+fun textStyle(size: Double? = null, block: @Composable ThemeTypographies.() -> TextStyle): TextStyle =
+    Typographies.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
-fun displayStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Display }): TextStyle =
-    Typographies.Display.block()
+fun displayStyle(size: Double? = null, block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault(size) { Display }): TextStyle =
+    Typographies.Display.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
-fun headlineStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Headline }): TextStyle =
-    Typographies.Headline.block()
+fun headlineStyle(size: Double? = null, block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault(size) { Headline }): TextStyle =
+    Typographies.Headline.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
-fun titleStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Title }): TextStyle =
-    Typographies.Title.block()
+fun titleStyle(size: Double? = null, block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault(size) { Title }): TextStyle =
+    Typographies.Title.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
-fun bodyStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Body }): TextStyle =
-    Typographies.Body.block()
+fun bodyStyle(size: Double? = null, block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault(size) { Body }): TextStyle =
+    Typographies.Body.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
-fun labelStyle(block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault { Label }): TextStyle =
-    Typographies.Label.block()
+fun labelStyle(size: Double? = null, block: @Composable UiSize<TextStyle>.() -> TextStyle = textStyleDefault(size) { Label }): TextStyle =
+    Typographies.Label.block().apply(condition = size != null) { copy(fontSize = size!!.sp) }
 
 @Composable
 fun textStyleDefault(
+    size: Double? = null,
     block: @Composable ThemeTypographies.() -> UiSize<TextStyle>
 ): @Composable UiSize<TextStyle>.() -> TextStyle =
-    @Composable { textStyle { block().medium } }
+    @Composable { textStyle(size) { block().medium } }

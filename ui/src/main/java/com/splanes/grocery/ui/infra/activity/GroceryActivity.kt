@@ -6,7 +6,7 @@ import com.splanes.grocery.ui.feature.auth.navigation.builder.AuthNavigationBuil
 import com.splanes.grocery.ui.feature.mainscreen.navigation.builder.MainScreenNavigationBuilder
 import com.splanes.grocery.ui.infra.activity.navigation.GroceryNavigatorComponent
 import com.splanes.grocery.ui.infra.navigation.builder.NavigationBuilder
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.toolkit.compose.base_arch.feature.presentation.activity.BaseComponentActivity
 import com.splanes.toolkit.compose.ui.components.feature.scaffold.model.ScaffoldColors
 import com.splanes.toolkit.compose.ui.components.feature.statusbar.model.StatusBarColors
@@ -31,14 +31,14 @@ class GroceryActivity : BaseComponentActivity<GroceryActivityViewModel>() {
 
     override val initialStatusBarColor: StatusBarColors
         @Composable
-        get() = StatusBarColors(color { primaryContainer })
+        get() = StatusBarColors(palette { primaryContainer })
 
     override val activityViewModel: GroceryActivityViewModel
         @Composable
         get() = hiltViewModel<GroceryActivityViewModel>().apply {
             ready(
                 initialStatusBarColor,
-                ScaffoldColors(container = color { primaryContainer }, content = color { surface })
+                ScaffoldColors(container = palette { primaryContainer }, content = palette { surface })
             )
         }
 

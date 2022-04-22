@@ -10,18 +10,24 @@ import com.splanes.grocery.domain.feature.product.model.GroceryList
 import com.splanes.grocery.ui.component.bar.AppBars
 import com.splanes.grocery.ui.component.scaffold.Scaffolds
 import com.splanes.grocery.ui.feature.mainscreen.component.subcomponent.bottombar.BottomBarItem
+import com.splanes.grocery.ui.feature.markets.component.subcomponent.form.location.PermissionRequestListener
 import com.splanes.grocery.ui.utils.resources.Strings
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiEvent
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiModel
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiSideEffect
 import com.splanes.toolkit.compose.ui.components.common.utils.color.composite
 
-sealed class MainScreenUiModel(open val scaffoldUiState: Scaffolds.UiState = ScaffoldInitialUiState) : UiModel {
+sealed class MainScreenUiModel(
+    open val scaffoldUiState: Scaffolds.UiState = ScaffoldInitialUiState
+) : UiModel {
+
     data class Idle(
         override val scaffoldUiState: Scaffolds.UiState = ScaffoldInitialUiState,
-        val groceryLists: List<GroceryList>
+        val isRequestLocationVisible: Boolean = false,
+        val permissionRequestListener: PermissionRequestListener? = null,
+        val groceryLists: List<GroceryList> = emptyList()
     ) : MainScreenUiModel(scaffoldUiState = scaffoldUiState)
 
     data class Skeleton(override val scaffoldUiState: Scaffolds.UiState = ScaffoldInitialUiState) :
@@ -33,10 +39,6 @@ sealed class MainScreenUiModel(open val scaffoldUiState: Scaffolds.UiState = Sca
 
 sealed class MainScreenEvent : UiEvent
 data class OnBottomBarItemClick(val item: BottomBarItem) : MainScreenEvent()
-data class OnBottomSheetStateChanged(
-    val value: BottomSheetValue,
-    val updater: Scaffolds.UiState.() -> Scaffolds.UiState = { this }
-) : MainScreenEvent()
 
 sealed class MainScreenSideEffect : UiSideEffect
 sealed class BottomSheetSideEffect : MainScreenSideEffect() {
@@ -49,6 +51,7 @@ sealed class BottomSheetSideEffect : MainScreenSideEffect() {
                 Collapsed -> Collapse
                 Expanded -> Expand
             }
+
         @OptIn(ExperimentalMaterialApi::class)
         fun map(effect: BottomSheetSideEffect): BottomSheetValue =
             when (effect) {
@@ -58,8 +61,6 @@ sealed class BottomSheetSideEffect : MainScreenSideEffect() {
     }
 }
 
-sealed class Redirection : MainScreenSideEffect() {
-}
 
 private val ScaffoldInitialUiState
     get() = Scaffolds.UiState(
@@ -68,8 +69,8 @@ private val ScaffoldInitialUiState
                 title = { string { Strings.grocery } },
                 colors = {
                     AppBars.Top.colorsSmall(
-                        containerColor = color { primary },
-                        titleColor = color { onPrimary }
+                        containerColor = palette { primary },
+                        titleColor = palette { onPrimary }
                     )
                 }
             )

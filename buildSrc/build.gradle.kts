@@ -19,6 +19,7 @@ gradlePlugin {
 allprojects {
     repositories {
         google()
+        mavenCentral()
     }
 }
 
@@ -28,4 +29,5 @@ dependencies {
     implementation("com.google.gms:google-services:4.3.10")
     implementation("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     implementation("com.google.dagger:hilt-android-gradle-plugin:2.40.5")
+    implementation("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
 }

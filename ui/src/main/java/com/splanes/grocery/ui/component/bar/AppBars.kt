@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.splanes.grocery.ui.component.icons.Icons
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 
@@ -33,8 +33,8 @@ object AppBars {
 
         @Composable
         fun colorsSmall(
-            containerColor: Color = color { primary },
-            titleColor: Color = color { onPrimary },
+            containerColor: Color = palette { primary },
+            titleColor: Color = palette { onPrimary },
             navIconColor: Color = titleColor.alpha(.8),
             actionIconColor: Color = titleColor.alpha(.8),
         ): TopAppBarColors = TopAppBarDefaults.smallTopAppBarColors(

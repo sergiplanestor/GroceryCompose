@@ -13,12 +13,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.splanes.grocery.ui.utils.resources.color
 import com.splanes.grocery.ui.utils.resources.painter
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import androidx.compose.material.icons.Icons.Filled as IcFilled
 import androidx.compose.material.icons.Icons.Outlined as IcOutlined
@@ -43,7 +42,7 @@ object Icons {
         source: Source,
         modifier: Modifier = Modifier,
         size: Dp = SizeMedium.dp,
-        color: Color = color { onSurface }.alpha(.7),
+        color: Color = palette { onSurface }.alpha(.7),
         interactionSource: MutableInteractionSource = MutableInteractionSource(),
         onClick: (() -> Unit)? = null,
         enabled: Boolean = true,

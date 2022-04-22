@@ -39,7 +39,7 @@ import com.splanes.grocery.ui.component.icons.rounded
 import com.splanes.grocery.ui.component.spacer.row.Space
 import com.splanes.grocery.ui.feature.mainscreen.viewmodel.MainScreenViewModel
 import com.splanes.grocery.ui.feature.products.component.subcomponent.productFormBottomSheetUiState
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.grocery.utils.scope.apply
@@ -71,7 +71,7 @@ fun ProductsComponent(
                 .padding(bottom = dp { large }),
             scrollState = productsScrollState,
             onClick = {
-                mainScreenViewModel.onBottomSheetStateChanged {
+                mainScreenViewModel.onScaffoldUiStateChanged {
                     copy(
                         bottomSheetUiState = productFormBottomSheetUiState(
                             onClose = { onBottomSheet(BottomSheets.Collapsed) }
@@ -91,9 +91,9 @@ fun AddProductFloatingButton(
     onClick: () -> Unit
 ) {
     val iconSize by animateDpAsState(targetValue = (if (scrollState.isScrollInProgress) 26 else 20).dp)
-    val iconColor by animateColorAsState(targetValue = color { onTertiary }.alpha(if (scrollState.isScrollInProgress) .6 else .8))
+    val iconColor by animateColorAsState(targetValue = palette { onTertiary }.alpha(if (scrollState.isScrollInProgress) .6 else .8))
     val buttonColor by animateColorAsState(
-        targetValue = color { tertiary.apply(scrollState.isScrollInProgress) { alpha(.35) } },
+        targetValue = palette { tertiary.apply(scrollState.isScrollInProgress) { alpha(.35) } },
         animationSpec = tween(durationMillis = if (scrollState.isScrollInProgress) 1000 else 100)
     )
     val buttonElevation by animateFloatAsState(
@@ -148,7 +148,7 @@ fun AddProductFloatingButton(
                     Text(
                         text = "Add product",
                         style = titleStyle { large },
-                        color = color { onTertiary }.alpha(.8)
+                        color = palette { onTertiary }.alpha(.8)
                     )
                 }
             }

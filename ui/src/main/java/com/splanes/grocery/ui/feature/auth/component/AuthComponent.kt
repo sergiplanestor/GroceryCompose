@@ -16,7 +16,7 @@ import com.splanes.grocery.ui.feature.auth.contract.AuthUiModel
 import com.splanes.grocery.ui.feature.auth.viewmodel.AuthViewModel
 import com.splanes.grocery.ui.utils.anim.tween
 import com.splanes.grocery.ui.utils.resources.Strings
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiState
 import com.splanes.toolkit.compose.ui.components.feature.statusbar.utils.statusBarColors
@@ -67,7 +67,7 @@ fun GroceryAuthComponent(onNavToDashboard: () -> Unit) {
 fun AuthStatusBar() {
     val uiController = rememberSystemUiController()
     uiController.statusBarColors(
-        color = color { primary },
+        color = palette { primary },
         transformation = null
     )
 }

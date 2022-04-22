@@ -10,7 +10,6 @@ import com.splanes.grocery.ui.feature.mainscreen.contract.MainScreenUiModel.Empt
 import com.splanes.grocery.ui.feature.mainscreen.contract.MainScreenUiModel.Idle
 import com.splanes.grocery.ui.feature.mainscreen.contract.MainScreenUiModel.Skeleton
 import com.splanes.grocery.ui.feature.mainscreen.contract.OnBottomBarItemClick
-import com.splanes.grocery.ui.feature.mainscreen.contract.OnBottomSheetStateChanged
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.grocery.ui.utils.viewmodel.uiModel
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiState
@@ -18,7 +17,6 @@ import com.splanes.toolkit.compose.base_arch.feature.presentation.component.view
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@OptIn(ExperimentalMaterialApi::class)
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
 
@@ -33,7 +31,6 @@ class MainScreenViewModel @Inject constructor(
         with(uiEvent) {
             when (this) {
                 is OnBottomBarItemClick -> onBottomBarRedirect(item)
-                is OnBottomSheetStateChanged -> onBottomSheetStateChanged(updater)
             }
         }
     }
@@ -52,7 +49,7 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun onBottomSheetStateChanged(updater: Scaffolds.UiState.() -> Scaffolds.UiState) {
+    fun onScaffoldUiStateChanged(updater: Scaffolds.UiState.() -> Scaffolds.UiState) {
         updateUiModel { from ->
             val newScaffoldState = from.scaffoldUiState.updater()
             when (from) {

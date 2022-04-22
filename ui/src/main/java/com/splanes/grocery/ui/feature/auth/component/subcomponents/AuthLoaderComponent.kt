@@ -21,7 +21,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.splanes.grocery.ui.R
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
@@ -30,7 +30,7 @@ import com.splanes.toolkit.compose.ui.theme.UiTheme
 @Composable
 fun AuthLoaderComponent(
     message: String,
-    background: Color = color { tertiaryContainer }
+    background: Color = palette { tertiaryContainer }
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.anim_grocery_cart))
     Surface(

@@ -16,7 +16,7 @@ import com.splanes.grocery.ui.component.bar.AppBars.Top.navIconColor
 import com.splanes.grocery.ui.component.bar.AppBars.Top.titleColor
 import com.splanes.grocery.ui.component.icons.Icons
 import com.splanes.grocery.ui.utils.resources.Strings
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.headlineStyle
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Colors
@@ -59,7 +59,7 @@ fun TopAppBar(
 @Composable
 fun TopAppBarTitle(
     text: String,
-    color: Color = color { onPrimary },
+    color: Color = palette { onPrimary },
     align: TextAlign = TextAlign.Start,
     style: TextStyle = headlineStyle { small }
 ) {

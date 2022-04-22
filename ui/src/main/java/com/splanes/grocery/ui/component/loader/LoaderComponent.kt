@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import com.splanes.grocery.ui.component.anim.LottieComponent
 import com.splanes.grocery.ui.component.spacer.column.Space
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
@@ -34,8 +34,8 @@ fun LoaderComponent(
     @RawRes animRawRes: Int? = null,
     animSize: Dp = Loaders.animSize { medium },
     containerShape: Shape = RectangleShape,
-    contentColor: Color = color { onTertiaryContainer },
-    containerColor: Color = color { tertiaryContainer },
+    contentColor: Color = palette { onTertiaryContainer },
+    containerColor: Color = palette { tertiaryContainer },
     messageContent: (@Composable ColumnScope.() -> Unit)? = message?.let { text ->
         {
             LoaderMessageComponent(

@@ -19,7 +19,7 @@ import com.splanes.grocery.ui.component.anim.AnimationSideEffect
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
 import com.splanes.grocery.ui.utils.resources.Drawables
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.dpValue
 import com.splanes.grocery.ui.utils.resources.painter
@@ -37,14 +37,14 @@ fun ColumnScope.AuthHeaderComponent(onAnimFinish: () -> Unit) {
         modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .alpha(alphaAnim.value),
-        color = color { onPrimary },
+        color = palette { onPrimary },
         shape = CircleShape
     ) {
         Box(modifier = Modifier.padding(all = dp { huge }), contentAlignment = Alignment.Center) {
             Icon(
                 modifier = Modifier.size(65.dp),
                 painter = painter { Drawables.ic_grocery_bag },
-                tint = color { primary },
+                tint = palette { primary },
                 contentDescription = null
             )
         }

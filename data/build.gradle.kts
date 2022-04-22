@@ -30,6 +30,7 @@ dependencies {
     api(platform("com.google.firebase:firebase-bom:29.2.1"))
     api("com.google.firebase:firebase-auth-ktx")
     api("com.google.firebase:firebase-database-ktx")
+    api("com.google.android.libraries.places:places:2.6.0")
 
     hilt()
     room()

@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.splanes.grocery.ui.component.spacer.column.Space
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.viewport
 
 @Composable
@@ -26,7 +26,7 @@ fun AuthContainerComponent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color { primary })
+            .background(palette { primary })
     ) {
         Column(
             modifier = Modifier
@@ -36,7 +36,7 @@ fun AuthContainerComponent(
                     end = viewport { mediumSmall },
                     top = viewport { medium }
                 )
-                .background(color { primary })
+                .background(palette { primary })
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

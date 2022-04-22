@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.utils.anim.AnimDefaults
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.titleStyle
 import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
@@ -47,32 +47,32 @@ object FieldDefaults {
 
     @Composable
     fun colorsOutlined(
-        textColor: Color = color { onSurface },
-        unfocusedBorderColor: Color = color { onSurface },
-        focusedBorderColor: Color = color { primary },
+        textColor: Color = palette { onSurface },
+        unfocusedBorderColor: Color = palette { onSurface },
+        focusedBorderColor: Color = palette { primary },
         disabledBorderColor: Color = unfocusedBorderColor.alpha(ContentAlpha.disabled),
-        errorBorderColor: Color = color { error },
-        disabledTextColor: Color = color { onSurface }.alpha(ContentAlpha.disabled),
-        cursorColor: Color = color { primary }.alpha(.8),
-        errorCursorColor: Color = color { error.composite(surface, .7) },
-        leadingIconColor: Color = color {
+        errorBorderColor: Color = palette { error },
+        disabledTextColor: Color = palette { onSurface }.alpha(ContentAlpha.disabled),
+        cursorColor: Color = palette { primary }.alpha(.8),
+        errorCursorColor: Color = palette { error.composite(surface, .7) },
+        leadingIconColor: Color = palette {
             primary.composite(
                 surface,
                 alpha = TextFieldDefaults.IconOpacity
             )
         },
         disabledLeadingIconColor: Color = leadingIconColor.copy(alpha = ContentAlpha.disabled),
-        errorLeadingIconColor: Color = color {
+        errorLeadingIconColor: Color = palette {
             error.composite(
                 surface,
                 alpha = TextFieldDefaults.IconOpacity
             )
         },
-        trailingIconColor: Color = color { onSurface }.alpha(alpha = TextFieldDefaults.IconOpacity),
+        trailingIconColor: Color = palette { onSurface }.alpha(alpha = TextFieldDefaults.IconOpacity),
         disabledTrailingIconColor: Color = trailingIconColor.copy(alpha = ContentAlpha.disabled),
         errorTrailingIconColor: Color = trailingIconColor,
-        focusedLabelColor: Color = color { primary }.alpha(.8),
-        unfocusedLabelColor: Color = color { onSurface }.alpha(ContentAlpha.medium),
+        focusedLabelColor: Color = palette { primary }.alpha(.8),
+        unfocusedLabelColor: Color = palette { onSurface }.alpha(ContentAlpha.medium),
         disabledLabelColor: Color = unfocusedLabelColor.copy(ContentAlpha.disabled),
         errorLabelColor: Color = MaterialTheme.colors.error,
         placeholderColor: Color = textColor.alpha(ContentAlpha.medium),

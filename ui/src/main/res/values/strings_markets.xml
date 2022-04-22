@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="market_add_new">New Market</string>
+    <string name="market_form_origin_picker_title">New Market</string>
+    <string name="market_form_origin_picker_description">Tired of filling forms? We can use your location to find out
+        all those markets near your 🧐.</string>
+    <string name="market_form_manual_title">Market info</string>
+    <string name="market_form_find_near_title">Finding markets near you</string>
+
+    <string name="market_form_origin_location_text">Show near markets</string>
+    <string name="market_form_origin_manual_form_text">I\'ll do manually</string>
+</resources>

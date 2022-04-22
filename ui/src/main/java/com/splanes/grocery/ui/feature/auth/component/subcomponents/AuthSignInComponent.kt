@@ -31,7 +31,7 @@ import com.splanes.grocery.ui.component.spacer.VerticalSpace
 import com.splanes.grocery.ui.component.spacer.column.Space
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.color
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.headlineStyle
 import com.splanes.grocery.ui.utils.resources.plus
@@ -58,7 +58,7 @@ fun AuthAutoSignInComponent(onSignIn: () -> Unit) {
     ) {
         Text(
             text = string { Strings.user_sign_in },
-            color = color { onPrimary },
+            color = palette { onPrimary },
             style = headlineStyle { medium },
             textAlign = TextAlign.Center,
             fontSize = headlineStyle { medium }.fontSize + 2
@@ -70,8 +70,8 @@ fun AuthAutoSignInComponent(onSignIn: () -> Unit) {
                 .wrapContentHeight(),
             animRawRes = R.raw.anim_grocery_cart,
             animSize = Loaders.animSize { large },
-            containerColor = color { inverseSurface }.alpha(.8),
-            contentColor = color { inverseOnSurface },
+            containerColor = palette { inverseSurface }.alpha(.8),
+            contentColor = palette { inverseOnSurface },
             containerShape = shape { large },
             animContent = { AuthAutoSignInLoadingAnim() },
             messageContent = { AuthAutoSignInLoadingMessage() }
@@ -90,8 +90,8 @@ fun AuthAutoSignInLoadingAnim() {
             .background(
                 brush = Brush.radialGradient(
                     colors = listOf(
-                        color { inverseOnSurface },
-                        color { inverseOnSurface }.alpha(.6),
+                        palette { inverseOnSurface },
+                        palette { inverseOnSurface }.alpha(.6),
                         Color.Transparent
                     ),
                     tileMode = TileMode.Decal,
@@ -113,13 +113,13 @@ fun AuthAutoSignInLoadingMessage() {
     VerticalSpace { small }
     LoaderMessageComponent(
         text = string { Strings.signing_in_user_loading_title },
-        textColor = color { inverseOnSurface },
+        textColor = palette { inverseOnSurface },
         textStyle = titleStyle { large }
     )
     VerticalSpace { mediumLarge }
     LoaderMessageComponent(
         text = string { Strings.signing_in_user_loading_msg },
-        textColor = color { inverseOnSurface },
+        textColor = palette { inverseOnSurface },
         textStyle = bodyStyle { large }
     )
     VerticalSpace { mediumSmall }

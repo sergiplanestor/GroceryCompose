@@ -30,8 +30,7 @@ dependencies {
     compose()
     lottieCompose()
     toolkitCompose()
-
-    calendarComponent()
+    emojiLibs()
 
     test()
 }
