@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.button.Buttons
-import com.splanes.grocery.ui.component.dialog.Dialogs
+import com.splanes.grocery.ui.component.dialog.Dialog
 import com.splanes.grocery.ui.component.icons.Icons
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.dp
@@ -31,7 +31,7 @@ fun DialogInfo(
     body: String? = null,
     bodyColor: Color = palette { onSurface },
     button: String = string { Strings.gotcha },
-    dismissProps: Dialogs.DismissProps = Dialogs.DismissProps.Always,
+    dismissProps: Dialog.DismissProps = Dialog.DismissProps.Always,
     onPositiveClick: () -> Boolean = { false },
     onDismissRequest: () -> Unit
 ) {

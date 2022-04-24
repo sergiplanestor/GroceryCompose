@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.bar.AppBars
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets.shapeCornerSize
-import com.splanes.grocery.ui.component.dialog.Dialogs
+import com.splanes.grocery.ui.component.dialog.Dialog
 import com.splanes.grocery.ui.component.loader.Loaders
 import com.splanes.grocery.ui.component.snackbar.Snackbars
 import com.splanes.grocery.ui.utils.anim.tween
@@ -57,7 +57,7 @@ object Scaffolds {
         val bottomBarUiModel: AppBars.Bottom.UiModel get() = bottomBarUiState.uiModel
         val bottomSheetUiModel: BottomSheets.UiModel get() = bottomSheetUiState.uiModel
         val snackbarUiModel: Snackbars.UiModel get() = snackbarUiState.uiModel
-        val dialogUiModel: Dialogs.UiModel get() = dialogUiState.uiModel
+        val dialogUiModel: Dialog.UiModel get() = dialogUiState.uiModel
         val loaderUiModel: Loaders.UiModel get() = loaderUiState.uiModel
 
         fun copy(
@@ -66,7 +66,7 @@ object Scaffolds {
             bottomBarUiModel: AppBars.Bottom.UiModel = this.bottomBarUiModel,
             bottomSheetUiModel: BottomSheets.UiModel = this.bottomSheetUiModel,
             snackbarUiModel: Snackbars.UiModel = this.snackbarUiModel,
-            dialogUiModel: Dialogs.UiModel = this.dialogUiModel,
+            dialogUiModel: Dialog.UiModel = this.dialogUiModel,
             loaderUiModel: Loaders.UiModel = this.loaderUiModel,
         ): UiState =
             copy(
@@ -96,7 +96,7 @@ object Scaffolds {
     fun UiState.bottomBarUiModel(): AppBars.Bottom.UiModel = bottomBarUiState.uiModel
     fun UiState.bottomSheetUiModel(): BottomSheets.UiModel = bottomSheetUiState.uiModel
     fun UiState.snackbarUiModel(): Snackbars.UiModel = snackbarUiState.uiModel
-    fun UiState.dialogUiModel(): Dialogs.UiModel = dialogUiState.uiModel
+    fun UiState.dialogUiModel(): Dialog.UiModel = dialogUiState.uiModel
     fun UiState.loaderUiModel(): Loaders.UiModel = loaderUiState.uiModel
 
     fun UiState.uiModel(): UiModel = UiModel(
@@ -113,7 +113,7 @@ object Scaffolds {
         val bottomBarUiModel: AppBars.Bottom.UiModel,
         val bottomSheetUiModel: BottomSheets.UiModel,
         val snackbarUiModel: Snackbars.UiModel,
-        val dialogUiModel: Dialogs.UiModel,
+        val dialogUiModel: Dialog.UiModel,
         val loaderUiModel: Loaders.UiModel,
     )
 
@@ -176,7 +176,7 @@ object Scaffolds {
     }
 
     data class DialogUiState(
-        override val uiModel: Dialogs.UiModel,
+        override val uiModel: Dialog.UiModel,
         val visible: Boolean = false,
         val enterTransition: EnterTransition = expandIn(
             animationSpec = spring(
@@ -194,9 +194,9 @@ object Scaffolds {
             ),
             shrinkTowards = Alignment.Center
         )
-    ) : SubcomponentUiState<Dialogs.UiModel> {
+    ) : SubcomponentUiState<Dialog.UiModel> {
         companion object {
-            fun empty(): DialogUiState = DialogUiState(uiModel = Dialogs.UiModel.empty())
+            fun empty(): DialogUiState = DialogUiState(uiModel = Dialog.UiModel.Empty)
         }
     }
 

@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.splanes.grocery.ui.component.bar.BottomAppBar
 import com.splanes.grocery.ui.component.bar.TopAppBar
-import com.splanes.grocery.ui.component.dialog.Dialogs
+import com.splanes.grocery.ui.component.dialog.Dialog
 import com.splanes.grocery.ui.component.scaffold.Scaffold
 import com.splanes.grocery.ui.component.scaffold.ScaffoldViewModel
 import com.splanes.grocery.ui.component.scaffold.Scaffolds
@@ -71,7 +71,7 @@ fun MainScreenComponent(navHostController: NavHostController) {
                 titleColor = palette { error.composite(surface, .7) },
                 body = string { Strings.permissions_needed },
                 bodyColor = palette { error.composite(surface, .7) },
-                dismissProps = Dialogs.DismissProps.OnBack,
+                dismissProps = Dialog.DismissProps.OnBack,
                 onDismissRequest = {
                     viewModel.onScaffoldUiStateChanged {
                         copy(dialogUiState = dialogUiState.copy(visible = false))
