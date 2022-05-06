@@ -1,7 +1,8 @@
 package com.splanes.grocery.ui.feature.products.component.subcomponent.form
 
-import com.splanes.grocery.ui.component.form.model.Forms
-import com.splanes.grocery.ui.component.form.model.Forms.satisfies
+import com.splanes.grocery.ui.component.form.Forms
+import com.splanes.grocery.ui.component.form.utils.NotNullOrBlank
+import com.splanes.grocery.ui.component.form.utils.resultOf
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiEvent
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiModel
@@ -19,28 +20,27 @@ enum class ProductFormField(val position: Int) {
 }
 
 data class ProductFormUiModel(
-    val nameFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val descriptionFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val categoryFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val marketsFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val pricesFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val isHighlightFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val isAddToCurrentFormState: Forms.State<String> = Forms.Idle(value = ""),
-    val frequencyFormState: Forms.State<String> = Forms.Idle(value = ""),
+    val nameFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val descriptionFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val categoryFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val marketsFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val pricesFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val isHighlightFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val isAddToCurrentFormState: Forms.State<String> = Forms.Valid(value = ""),
+    val frequencyFormState: Forms.State<String> = Forms.Valid(value = ""),
 ): UiModel
 
 object ProductFormEvent : UiEvent
 object ProductFormSideEffect : UiSideEffect
 
 val NotNullOrBlankValidators: List<Forms.Validator<String>> = listOf(
-    Forms.Validator.NotNull(error = Strings.field_error_mandatory),
-    Forms.Validator.NotBlank(error = Strings.field_error_mandatory),
+    Forms.Validator(error = Strings.field_error_mandatory, Forms.Validator.NotNullOrBlank),
 )
 
 fun <T> Forms.State<T>.onChanged(value: T, validators: List<Forms.Validator<T>> = emptyList()): Forms.State<T> {
-    val validatorResult = value.satisfies(validators)
+    val validatorResult = Forms.Validator.resultOf(validators, value)
     return when (this) {
-        is Forms.Idle -> {
+        is Forms.Valid -> {
             when (validatorResult) {
                 is Forms.Validator.Error -> Forms.Error(value, validatorResult.error)
                 Forms.Validator.Valid -> copy(value)
@@ -49,7 +49,7 @@ fun <T> Forms.State<T>.onChanged(value: T, validators: List<Forms.Validator<T>> 
         is Forms.Error -> {
             when (validatorResult) {
                 is Forms.Validator.Error -> copy(value = value, message = validatorResult.error)
-                Forms.Validator.Valid -> Forms.Idle(value)
+                Forms.Validator.Valid -> Forms.Valid(value)
             }
         }
     }

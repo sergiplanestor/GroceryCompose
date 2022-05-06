@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.splanes.grocery.utils.logger.utils.throwMessage
 import com.splanes.grocery.utils.scope.apply
+import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 import com.splanes.toolkit.compose.ui.theme.feature.typographies.ThemeTypographies
 import com.splanes.toolkit.compose.ui.theme.utils.accessors.Body
@@ -49,8 +50,12 @@ fun <T> resource(block: Resources.() -> T): T =
     LocalContext.current.resources.block()
 
 @Composable
-fun palette(block: ThemeColorScheme.() -> Color): Color =
-    Colors.run(block)
+fun palette(block: @Composable ThemeColorScheme.() -> Color): Color =
+    palette(alpha = 1.0, block = block)
+
+@Composable
+fun palette(alpha: Double, block: @Composable ThemeColorScheme.() -> Color): Color =
+    Colors.run { block() }.alpha(alpha = alpha)
 
 @Composable
 fun shape(size: Int): Shape = RoundedCornerShape(size.dp)

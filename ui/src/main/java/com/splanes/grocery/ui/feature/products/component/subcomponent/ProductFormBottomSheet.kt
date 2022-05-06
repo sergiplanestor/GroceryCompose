@@ -45,9 +45,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheetCloseButton
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheetTitle
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets
-import com.splanes.grocery.ui.component.form.model.Forms
-import com.splanes.grocery.ui.component.form.model.Forms.Error
-import com.splanes.grocery.ui.component.form.model.Forms.isError
+import com.splanes.grocery.ui.component.form.Forms
+import com.splanes.grocery.ui.component.form.Forms.Error
+import com.splanes.grocery.ui.component.form.utils.isError
 import com.splanes.grocery.ui.component.icons.Icons
 import com.splanes.grocery.ui.component.icons.painter
 import com.splanes.grocery.ui.component.scaffold.Scaffolds
@@ -65,9 +65,9 @@ import com.splanes.grocery.ui.utils.resources.Drawables
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.labelStyle
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.grocery.ui.utils.resources.titleStyle

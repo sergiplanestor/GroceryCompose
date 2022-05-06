@@ -1,6 +1,8 @@
 package com.splanes.grocery.ui.feature.markets.component.subcomponent.form.contract
 
 import androidx.annotation.StringRes
+import com.splanes.grocery.domain.feature.market.model.Market
+import com.splanes.grocery.ui.component.form.Forms
 import com.splanes.grocery.ui.utils.resources.Strings
 
 private const val MARKET_ORIGIN_PICKER_BOTTOM_SHEET_ID = "BottomSheet.Market.Form.OriginPicker"
@@ -23,3 +25,8 @@ enum class MarketOriginType {
         ManualForm -> MarketFormType.Manual
     }
 }
+
+data class MarketManualFormUiModel(
+    val name: Forms.State<String>,
+    val brand: Forms.State<Market.Brand>,
+)

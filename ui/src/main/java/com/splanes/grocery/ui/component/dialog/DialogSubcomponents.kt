@@ -4,16 +4,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.splanes.grocery.ui.component.button.Buttons
+import com.splanes.grocery.ui.component.dialog.utils.border
+import com.splanes.grocery.ui.component.dialog.utils.elevation
 import com.splanes.grocery.ui.component.icons.Icons
 import com.splanes.grocery.ui.component.spacer.row.Space
-import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.shape
 
 @Composable
@@ -50,61 +50,39 @@ fun DialogText(title: Dialog.Text) = DialogContent(uiModel = title) {
 }
 
 @Composable
-fun DialogButton(button: Dialog.Button, onDismissRequest: () -> Unit) = with(button) {
-    when(style) {
-       Dialog.Button.Style.Filled -> {
-           Buttons.Fill(
-               text = text,
-               onClick = {
-                   action()
-                   onDismissRequest()
-               }
-           )
-       }
-        Dialog.Button.Style.Outlined -> {
-            Buttons.Fill(
-                text = text,
-                onClick = {
-                    action()
-                    onDismissRequest()
-                }
-            )
-        }
-        else -> {
-            Buttons.Fill(
-                text = text,
-                onClick = {
-                    action()
-                    onDismissRequest()
-                }
-            )
-        }
-    }
-
-    TextButton(
+fun DialogButton(button: Dialog.Button, onClick: () -> Unit) = with(button) {
+    val buttonColors = colors()
+    Button(
         enabled = enabled,
         onClick = onClick,
-        shape = shape(size = cornerSize),
-        colors = colors
+        shape = shape(size = 12),
+        colors = buttonColors,
+        elevation = style.elevation(),
+        border = style.border(color = buttonColors.border()),
     ) {
-        if (leadingIconContent != null) {
+        if (leadingIconModel != null) {
             Space { tiny }
-            leadingIconContent()
+            Icons.Icon(
+                source = leadingIconModel.source,
+                size = leadingIconModel.size.dp,
+                color = buttonColors.icon(),
+            )
             Space { small }
         }
-        textContent(text, textStyle, enabled, colors)
-        if (trailingIconContent != null) {
+        Text(
+            text = textModel.text,
+            style = textModel.style.copy(fontSize = textModel.size.sp),
+            color = buttonColors.contentColor(enabled = enabled).value
+        )
+        if (trailingIconModel != null) {
             Space { small }
-            trailingIconContent()
+            Icons.Icon(
+                source = trailingIconModel.source,
+                size = trailingIconModel.size.dp,
+                color = buttonColors.icon(),
+            )
             Space { tiny }
         }
     }
 }
 
-@Composable
-fun DialogButtons(button: String, onClick: () -> Unit) {
-    Buttons.Fill(
-        text = button,
-        onClick = onClick
-    )
-}

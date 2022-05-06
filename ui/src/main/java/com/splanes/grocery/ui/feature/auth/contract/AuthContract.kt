@@ -1,6 +1,6 @@
 package com.splanes.grocery.ui.feature.auth.contract
 
-import com.splanes.grocery.ui.component.form.model.Forms
+import com.splanes.grocery.ui.component.form.Forms
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiEvent
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiModel
 import com.splanes.toolkit.compose.base_arch.feature.presentation.component.contract.UiSideEffect
@@ -8,8 +8,8 @@ import com.splanes.toolkit.compose.base_arch.feature.presentation.component.cont
 sealed class AuthUiModel : UiModel {
     object AutoSignIn: AuthUiModel()
     data class SignUp(
-        val email: Forms.State<String> = Forms.Idle(value = ""),
-        val username: Forms.State<String> = Forms.Idle(value = "")
+        val email: Forms.State<String> = Forms.Valid(value = ""),
+        val username: Forms.State<String> = Forms.Valid(value = "")
     ) : AuthUiModel()
 }
 

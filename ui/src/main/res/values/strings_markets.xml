@@ -7,6 +7,18 @@
     <string name="market_form_manual_title">Market info</string>
     <string name="market_form_find_near_title">Finding markets near you</string>
 
+    <string name="market_form_brand_label">Market\'s brand</string>
+    <string name="market_form_brand_placeholder">Pick a market brand</string>
     <string name="market_form_origin_location_text">Show near markets</string>
     <string name="market_form_origin_manual_form_text">I\'ll do manually</string>
+    <string name="market_form_manual_description">Fill the following market\'s data. There only are three mandatory
+        fields: the brand, the market\'s name and the alias or discriminator.\n\nAll other fields are optional, even
+        you can hide it to not disturb, but remember, <b>the more fields you complete, the more precise, accurate and
+            better service we will be able to provide you 😊!</b>
+    </string>
+    <string name="market_brand_picker_how_to_stop_edit">Click over the brand to select it and stop edit.</string>
+    <string name="market_form_name_label">Market\'s name</string>
+    <string name="market_form_name_placeholder">E.g.: market from next door.</string>
+    <string name="market_form_name_placeholder_with_brand">E.g.: %s from the back street.</string>
+    <string name="market_form_error_name_blank">Market\'s name cannot be blank.. If not, how will you recognize it?</string>
 </resources>

@@ -100,8 +100,8 @@ fun GroceryCheckboxIndicator(
     )
     val backgroundColor by Animations.colorAsState(
         condition = selected,
-        onTrue = colors.border(selected = true).alpha(.25),
-        onFalse = Color.Transparent
+        colorOnTrue = colors.border(selected = true).alpha(.25),
+        colorOnFalse = Color.Transparent
     )
     val indication = rememberRipple(
         bounded = false,

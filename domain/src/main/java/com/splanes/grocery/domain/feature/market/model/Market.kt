@@ -20,6 +20,7 @@ data class Market(
 
     sealed class Brand(open val id: String, open val name: String, open val categories: List<Category>) {
         object Undefined : Brand(id = MARKET_BRAND_ID_UNDEFINED, name = "", categories = emptyList())
+        companion object
     }
     object Condis : Brand(
         id = MARKET_BRAND_ID_CONDIS,

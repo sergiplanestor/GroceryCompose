@@ -12,6 +12,7 @@
     <string name="done">Done</string>
     <string name="gotcha">Gotcha!</string>
     <string name="search">Search</string>
+    <string name="close">Close</string>
     <string name="fill">Fill</string>
     <string name="dam">Ouch damn it!</string>
     <string name="permissions_needed">Those requested permissions were needed to go ahead, you have to granted to get
@@ -19,4 +20,6 @@
     </string>
 
     <string name="remember_selected_option">Remember selected option</string>
+    <string name="form_show_optional_fields">Show also optionals</string>
+    <string name="form_hide_optional_fields">Hide</string>
 </resources>

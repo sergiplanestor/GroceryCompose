@@ -2,6 +2,8 @@ package com.splanes.grocery.ui.component.dialog
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -11,9 +13,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.splanes.grocery.ui.component.dialog.utils.All
+import com.splanes.grocery.ui.component.dialog.utils.colorsOfStyle
 import com.splanes.grocery.ui.component.dialog.utils.styleOfType
 import com.splanes.grocery.ui.component.dialog.utils.triggers
 import com.splanes.grocery.ui.component.icons.Icons
+import com.splanes.grocery.utils.scope.apply
+import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 
 object Dialog {
@@ -28,6 +33,8 @@ object Dialog {
         open val buttonNeutrals: List<Button> = emptyList(),
         open val props: Properties = Properties()
     ) {
+        val onDismissRequest: () -> Unit get() = dismiss.requestDismiss
+
         object Empty : UiModel()
     }
 
@@ -96,12 +103,13 @@ object Dialog {
     }
 
     data class Button(
-        val text: Dialog.Text,
+        val textModel: Text,
         val type: Type,
         val enabled: Boolean = true,
-        val leadingIcon: Icon? = null,
-        val trailingIcon: Icon? = null,
+        val leadingIconModel: Icon? = null,
+        val trailingIconModel: Icon? = null,
         val style: Style = styleOfType(type),
+        val colors: @Composable () -> ButtonColors = { colorsOfStyle(style) },
         val action: () -> Unit
     ) {
         enum class Type { Positive, Negative, Neutral }
@@ -110,6 +118,14 @@ object Dialog {
 
             companion object
         }
+
+        @Composable
+        internal fun ButtonColors.border(): Color =
+            contentColor(enabled = enabled).value
+
+        @Composable
+        internal fun ButtonColors.icon(): Color =
+            contentColor(enabled = enabled).value.apply(enabled) { alpha(.7) }
 
         companion object
     }

@@ -9,7 +9,9 @@ import com.splanes.toolkit.compose.ui.components.common.utils.color.alpha
 import com.splanes.toolkit.compose.ui.components.common.utils.color.isDarkerColor
 
 
-class AlphaType internal constructor() {
+class AlphaLevel internal constructor() {
+    val opaque = -2
+    val transparent = -1
     val high = 0
     val medium = 1
     val low = 2
@@ -17,8 +19,10 @@ class AlphaType internal constructor() {
 }
 
 @Composable
-fun Color.alpha(block: AlphaType.() -> Int): Color =
-    alpha(when (block(AlphaType())) {
+fun Color.alpha(block: AlphaLevel.() -> Int): Color =
+    alpha(when (block(AlphaLevel())) {
+        -2 -> 1f
+        -1 -> 0f
         0 -> ContentAlpha.high
         1 -> ContentAlpha.medium
         2 -> {

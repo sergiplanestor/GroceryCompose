@@ -15,6 +15,7 @@ object DependencyVersion {
     const val composeActivity = "1.4.0"
     const val composeNavigation = "2.5.0-alpha02"
     const val composeAccompanistNavigationAnim = "0.24.2-alpha"
+    const val composeAccompanistPager = "0.24.7-alpha"
     const val composeSystemUi = "0.24.1-alpha"
     const val composeMaterialIconsExt = "1.2.0-alpha05"
 
@@ -64,6 +65,8 @@ object Dependency {
         "androidx.navigation:navigation-compose:${DependencyVersion.composeNavigation}"
     const val composeAccompanistNavigationAnim =
         "com.google.accompanist:accompanist-navigation-animation:${DependencyVersion.composeAccompanistNavigationAnim}"
+    const val composeAccompanistPager =
+        "com.google.accompanist:accompanist-pager:${DependencyVersion.composeAccompanistPager}"
     const val androidxComposeViewModel =
         "androidx.lifecycle:lifecycle-viewmodel-compose:${DependencyVersion.composeNavigation}"
     const val composeSystemUi =
@@ -183,6 +186,10 @@ fun DependencyHandler.composeNavigation(isNavAnim: Boolean = true) {
 
 fun DependencyHandler.composeNavigationAnim() {
     impl(Dependency.composeAccompanistNavigationAnim)
+}
+
+fun DependencyHandler.composePager() {
+    impl(Dependency.composeAccompanistPager)
 }
 
 fun DependencyHandler.composeViewModel() {

@@ -33,10 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.anim.AnimationSideEffect
 import com.splanes.grocery.ui.component.button.Buttons
-import com.splanes.grocery.ui.component.form.model.Forms
-import com.splanes.grocery.ui.component.form.model.Forms.Error
-import com.splanes.grocery.ui.component.form.model.Forms.isError
-import com.splanes.grocery.ui.component.form.model.Forms.satisfies
+import com.splanes.grocery.ui.component.form.Forms
+import com.splanes.grocery.ui.component.form.utils.Email
+import com.splanes.grocery.ui.component.form.utils.NotNullOrBlank
+import com.splanes.grocery.ui.component.form.utils.isError
+import com.splanes.grocery.ui.component.form.utils.isValid
+import com.splanes.grocery.ui.component.form.utils.resultOf
 import com.splanes.grocery.ui.component.icons.rounded
 import com.splanes.grocery.ui.component.spacer.VerticalSpace
 import com.splanes.grocery.ui.component.spacer.column.Space
@@ -49,11 +51,11 @@ import com.splanes.grocery.ui.utils.field.FieldType.Email
 import com.splanes.grocery.ui.utils.resources.Strings
 import com.splanes.grocery.ui.utils.resources.alpha
 import com.splanes.grocery.ui.utils.resources.bodyStyle
-import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.dp
 import com.splanes.grocery.ui.utils.resources.dpValue
 import com.splanes.grocery.ui.utils.resources.headlineStyle
 import com.splanes.grocery.ui.utils.resources.labelStyle
+import com.splanes.grocery.ui.utils.resources.palette
 import com.splanes.grocery.ui.utils.resources.shape
 import com.splanes.grocery.ui.utils.resources.string
 import com.splanes.grocery.ui.utils.resources.titleStyle
@@ -184,7 +186,7 @@ fun UsernameTextField(
         label = string { Strings.username },
         icon = Rounded.Badge,
         isError = state.isError(),
-        errorMessage = (state as? Error<String>)?.message,
+        errorMessage = (state as? Forms.Error<String>)?.message,
         keyboardOptions = FieldDefaults.keyboardOption(FieldType.Text(), ImeAction.Next)
     )
 }
@@ -202,7 +204,7 @@ fun EmailTextField(
         label = string { Strings.email },
         icon = com.splanes.grocery.ui.component.icons.Icons.rounded { AlternateEmail }.value,
         isError = state.isError(),
-        errorMessage = (state as? Error<String>)?.message,
+        errorMessage = (state as? Forms.Error<String>)?.message,
         keyboardOptions = FieldDefaults.keyboardOption(Email, ImeAction.Done)
     )
 }
@@ -338,12 +340,12 @@ private fun updateFieldState(
     value: String,
     validators: List<Forms.Validator<String>>
 ): Forms.State<String> {
-    val validatorResult = value.satisfies(validators)
+    val validatorResult = Forms.Validator.resultOf(validators, value)
     return when (currentState) {
-        is Forms.Idle -> {
+        is Forms.Valid -> {
             when (validatorResult) {
                 is Forms.Validator.Error ->
-                    Forms.Error(value, validatorResult.error)
+                    Forms.Error(value, message = validatorResult.error)
                 Forms.Validator.Valid ->
                     currentState.copy(value)
             }
@@ -353,19 +355,17 @@ private fun updateFieldState(
                 is Forms.Validator.Error ->
                     currentState.copy(value = value, message = validatorResult.error)
                 Forms.Validator.Valid ->
-                    Forms.Idle(value)
+                    Forms.Valid(value)
             }
         }
     }
 }
 
 private val usernameValidators: List<Forms.Validator<String>> = listOf(
-    Forms.Validator.NotNull(error = Strings.field_error_mandatory),
-    Forms.Validator.NotBlank(error = Strings.field_error_mandatory),
+    Forms.Validator(error = Strings.field_error_mandatory, Forms.Validator.NotNullOrBlank),
 )
 
 private val emailValidators: List<Forms.Validator<String>> = listOf(
-    Forms.Validator.NotNull(error = Strings.field_error_mandatory),
-    Forms.Validator.NotBlank(error = Strings.field_error_mandatory),
-    Forms.Validator.Email(error = Strings.field_error_invalid_email),
+    Forms.Validator(error = Strings.field_error_mandatory, Forms.Validator.NotNullOrBlank),
+    Forms.Validator(error = Strings.field_error_invalid_email, Forms.Validator.Email),
 )

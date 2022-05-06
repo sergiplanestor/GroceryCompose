@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.splanes.grocery.ui.component.bar.AppBars
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets
 import com.splanes.grocery.ui.component.bottomsheet.BottomSheets.shapeCornerSize
@@ -28,6 +27,7 @@ import com.splanes.grocery.ui.component.dialog.Dialog
 import com.splanes.grocery.ui.component.loader.Loaders
 import com.splanes.grocery.ui.component.snackbar.Snackbars
 import com.splanes.grocery.ui.utils.anim.tween
+import com.splanes.grocery.ui.utils.resources.Zero
 import com.splanes.grocery.ui.utils.shape.TopRoundedCornerShape
 import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 
@@ -158,7 +158,7 @@ object Scaffolds {
         val shape: @Composable (BottomSheetState) -> Shape = { bottomSheetState ->
             TopRoundedCornerShape(bottomSheetState.shapeCornerSize(idle = 24))
         },
-        val peekHeight: Dp = 0.dp,
+        val peekHeight: Dp = Dp.Zero,
         val sheetValue: BottomSheetValue = BottomSheets.Collapsed
     ) : SubcomponentUiState<BottomSheets.UiModel> {
         fun expandedUiState(): BottomSheetUiState = copy(sheetValue = BottomSheets.Expanded)

@@ -29,6 +29,7 @@ dependencies {
 
     compose()
     lottieCompose()
+    composePager()
     toolkitCompose()
     emojiLibs()
 

@@ -10,8 +10,11 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import com.splanes.grocery.ui.utils.resources.palette
+import com.splanes.toolkit.compose.ui.theme.feature.colors.ThemeColorScheme
 import com.splanes.toolkit.compose.ui.theme.utils.size.UiSize
 
 object Animations {
@@ -60,29 +63,56 @@ object Animations {
     @Composable
     fun floatAsState(
         condition: Boolean,
-        onTrue: Float,
-        onFalse: Float,
+        onTrue: Double,
+        onFalse: Double,
         animSpec: AnimationSpec<Float> = spring(),
         visibilityThreshold: Float = 0.01f,
         onEnd: ((Float) -> Unit)? = null
     ): State<Float> =
         animateFloatAsState(
-            targetValue = if (condition) onTrue else onFalse,
+            targetValue = (if (condition) onTrue else onFalse).toFloat(),
             animationSpec = animSpec,
             visibilityThreshold = visibilityThreshold,
             finishedListener = onEnd
         )
 
     @Composable
-    fun colorAsState(
+    fun animColor(
+        animSpec: AnimationSpec<Color> = tween { medium },
+        color: @Composable ThemeColorScheme.() -> Color
+    ): Color {
+        val c by animateColorAsState(targetValue = palette(color), animationSpec = animSpec)
+        return c
+    }
+
+    @Composable
+    fun animColor(
         condition: Boolean,
         onTrue: Color,
         onFalse: Color,
         animSpec: AnimationSpec<Color> = tween { medium },
         onEnd: ((Color) -> Unit)? = null
+    ): Color {
+        val color by colorAsState(
+            condition = condition,
+            colorOnTrue = onTrue,
+            colorOnFalse = onFalse,
+            animSpec = animSpec,
+            onEnd = onEnd
+        )
+        return color
+    }
+
+    @Composable
+    fun colorAsState(
+        condition: Boolean,
+        colorOnTrue: Color,
+        colorOnFalse: Color,
+        animSpec: AnimationSpec<Color> = tween { medium },
+        onEnd: ((Color) -> Unit)? = null
     ): State<Color> =
         animateColorAsState(
-            targetValue = if (condition) onTrue else onFalse,
+            targetValue = if (condition) colorOnTrue else colorOnFalse,
             animationSpec = animSpec,
             finishedListener = onEnd
         )
